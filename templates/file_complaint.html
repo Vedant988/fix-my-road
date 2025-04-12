@@ -1,0 +1,89 @@
+<!-- file_complaint.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Complaint</title>
+    <style>
+        form input,
+        form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        form button {
+            padding: 12px 24px;
+            font-size: 16px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #2980b9;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .back-btn button {
+            background-color: #777;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>File a Pothole Complaint</h1>
+
+        <form method="POST" action="/submit_complaint" enctype="multipart/form-data">
+            <label for="image">Upload Pothole Image:</label>
+            <input type="file" name="image" id="image" required>
+
+            <label for="description">Description:</label>
+            <textarea name="description" id="description" rows="4" required></textarea>
+
+            <label for="contact">Contact Number:</label>
+            <input type="text" name="contact" id="contact" required>
+
+            <label for="latitude">Latitude:</label>
+            <input type="text" name="latitude" id="latitude" required placeholder="e.g., 28.6139">
+
+            <label for="longitude">Longitude:</label>
+            <input type="text" name="longitude" id="longitude" required placeholder="e.g., 77.2090">
+
+            <button type="submit">Submit Complaint</button>
+        </form>
+
+        <div class="back-btn">
+            <a href="{{ url_for('home') }}"><button>Back to Home</button></a>
+        </div>
+    </div>
+</body>
+
+</html>

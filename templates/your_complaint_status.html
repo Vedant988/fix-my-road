@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Complaint Status</title>
+    <style>
+        .complaint-card {
+            border: 1px solid #ccc;
+            padding: 1em;
+            margin-bottom: 1em;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+    </style>
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> -->
+</head>
+<body>
+    <div class="container">
+        <h1>Your Complaint Status</h1>
+
+        {% if complaint_statuses %}
+            {% for complaint in complaint_statuses %}
+                <div class="complaint-card">
+                    <p><strong>Description:</strong> {{ complaint['description'] }}</p>
+                    <p><strong>Status:</strong> {{ complaint['status'] }}</p>
+                    <p><strong>Priority:</strong> {{ complaint['priority'] }}</p>
+                    <p><strong>Upvotes:</strong> {{ complaint['upvotes'] }}</p>
+                    <hr>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No complaints found for your account.</p>
+        {% endif %}
+
+        <a href="{{ url_for('home') }}"><button>Back to Home</button></a>
+    </div>
+</body>
+</html>

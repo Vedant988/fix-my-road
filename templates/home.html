@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Pothole Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    {% if user %}
+    <div>
+        <a>Welcome, {{ session.first_name }}</a>
+    </div>
+    {% endif %}
+    <div class="container">
+        <h1>Pothole Detection System</h1>
+        <p>Welcome to the Pothole Complaint System. Choose one of the following options:</p>
+
+        <div class="buttons">
+            {% if user %}
+                <a href="{{ url_for('file_complaint') }}"><button>File a Complaint</button></a>
+                <a href="{{ url_for('logout') }}"><button>Logout</button></a>
+            {% else %}
+                <a href="{{ url_for('login') }}"><button>File Complaint</button></a>
+            {% endif %}
+            <a href="{{ url_for('view_complaints') }}"><button>View Other Complaints</button></a>
+            <a href="{{ url_for('your_complaint_status') }}"><button>Your Complaint Status</button></a>
+        </div>
+    </div>
+</body>
+
+</html>
