@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -29,6 +29,1375 @@
             <a href="{{ url_for('your_complaint_status') }}"><button>Your Complaint Status</button></a>
         </div>
     </div>
+</body>
+
+</html> -->
+
+
+
+
+<!-- without-login-home.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Navic-helps to move around</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+  <link href="static/images/favicon.jpg" rel="icon">
+  <link href="static/images/Budget & Smart Travel Favicon.jpg" rel="apple-touch-icon">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Special+Gothic+Expanded+One&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+  <!-- tour CSS Files -->
+  <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="static/vendor/aos/aos.css" rel="stylesheet">
+  <link href="static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  
+
+  
+
+  <link href="static/css/main.css" rel="stylesheet">
+</head>
+
+<body class="index-page">
+
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+
+      <a href="index.html" class="logo d-flex align-items-center me-auto me-lg-0">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <!-- <images src="static/images/logo.png" alt=""> -->
+        <h1 class="sitename" style="color: #ffffff;">𝐟𝐢𝐱𝐦𝐲𝐫𝐨𝐚𝐝™</h1>
+        <span>&nbsp;&nbsp;</span>
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="#hero" class="active">🏠 Dashboard&nbsp;&nbsp;&nbsp;&nbsp;<br></a></li>
+          <li><a href="#about">ℹ️ About Us&nbsp;&nbsp;</a></li>
+          
+          <li><a href="#portfolio">🛣️ Projects &nbsp;&nbsp;&nbsp;&nbsp; </a></li>
+          
+          
+          <li><a href="#contact">📞 Support & Help &nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+      {% if user %}
+        <div class="button-group">
+            <a class="btn-getstarted login-icon" href="#" title="Profile">
+                <i class="bi bi-person"></i>
+            </a>
+            <a class="btn-getstarted login-icon" href="{{ url_for('logout') }}" title="Logout">
+                <i class="bi bi-box-arrow-right"></i>
+            </a>
+        </div>
+    {% else %}
+        <div class="button-group">
+            <a class="btn-getstarted" href="{{ url_for('register') }}">Register</a>
+            <a class="btn-getstarted" href="{{ url_for('login') }}">Login</a>
+        </div>
+    {% endif %}
+
+    </div>
+  </header>
+  <main class="main">
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero section dark-background">
+      <div class="slider-container">
+        <div class="slide active opacity-100 z-10" 
+             style="background-image: url('https://static.wixstatic.com/media/f8cafb_0c967d0a0ebb49b18645aacf6fcca2ee~mv2.jpg');">
+          <div class="slide-content">
+            {% if user %}
+            <div class="row justify-content-center text-center" data-aos="fade-up" data-aos-delay="100" 
+                style="font-size: 32px; color: #ffc107;">
+              <div>
+                Welcome, <span style="font-size: larger;">{{ first_name }}</span>
+              </div>
+            </div>
+            {% endif %}
+            <div class="row justify-content-center text-center" data-aos="fade-up" data-aos-delay="100" style="font-family: 'Special Gothic Expanded One '; font-size: 32px;">
+                <h2><span>Click. &nbsp; Share. &nbsp;  Repair.&nbsp;<span></span></h2>  
+            </div>
+          </div>
+        </div>
+      </div>
+      
+        <!-- Slide 2 -->
+        <div class="slide opacity-0 z-0" 
+     style="background-image: url('https://static.wixstatic.com/media/f8cafb_c511ab39a92e4c5c8cf5b30e77ec6818~mv2.jpg');">
+  <div class="slide-content">
+    <div class="row justify-content-center text-center" data-aos="fade-up" data-aos-delay="100">
+      <h2><span>Real-time transit updates,and nearby rentals at your fingertips!</span></h2>
+    </div>
+  </div>
+</div>
+
+      
+        <!-- Icon Boxes Container - Positioned at bottom of screen -->
+<div class="icon-boxes-container">
+  <div class="container">
+    <div class="row gy-4 justify-content-center" data-aos="fade-up" data-aos-delay="200">
+
+      <div class="col-xl-2 col-md-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="icon-box">
+          <i class="bi bi-pencil-square"></i>
+          <h3><a href="">📝 File Complaint</a></h3>
+        </div>
+      </div>
+
+      <div class="col-xl-2 col-md-4" data-aos="fade-up" data-aos-delay="400">
+        <div class="icon-box">
+          <i class="bi bi-map"></i>
+          <h3><a href="">🗺️ View on Map</a></h3>
+        </div>
+      </div>
+
+      <div class="col-xl-2 col-md-4" data-aos="fade-up" data-aos-delay="500">
+        <div class="icon-box">
+          <i class="bi bi-people-fill"></i>
+          <h3><a href="">👥 Community</a></h3>
+        </div>
+      </div>
+
+      <div class="col-xl-2 col-md-4" data-aos="fade-up" data-aos-delay="600">
+        <div class="icon-box">
+          <i class="bi bi-check2-circle"></i>
+          <h3><a href="">📋 Complaint Status</a></h3>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+      
+        <!-- Navigation buttons -->
+        <button class="nav-button prev" onclick="prevSlide()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="24" height="24">
+            <path d="M28.5 32.4c.1 0 .3-.1.4-.2.2-.2.2-.5 0-.7L22.2 25l6.7-6.5c.2-.2.2-.5 0-.7-.2-.2-.5-.2-.7 0L21 24.7c-.1.1-.2.2-.2.4 0 .1.1.3.2.4l7.1 6.8c.1 0 .3.1.4.1z" fill="#fff"/>
+          </svg>
+        </button>
+      
+        <button class="nav-button next" onclick="nextSlide()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="24" height="24" style="transform: rotate(180deg)">
+            <path d="M28.5 32.4c.1 0 .3-.1.4-.2.2-.2.2-.5 0-.7L22.2 25l6.7-6.5c.2-.2.2-.5 0-.7-.2-.2-.5-.2-.7 0L21 24.7c-.1.1-.2.2-.2.4 0 .1.1.3.2.4l7.1 6.8c.1 0 .3.1.4.1z" fill="#fff"/>
+          </svg>
+        </button>
+      </div>
+    </section><!-- /Hero Section -->
+
+  <!-- Rest of your website content would go here -->
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    let currentSlide = 0;
+    
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('opacity-100', i === index);
+        slide.classList.toggle('opacity-0', i !== index);
+        slide.classList.toggle('z-10', i === index);
+        slide.classList.toggle('z-0', i !== index);
+      });
+    }
+    
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
+    
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+      showSlide(currentSlide);
+    }
+    
+    // Auto-slide every 7 seconds
+    setInterval(nextSlide, 7000);
+  </script>
+  <br><br><br>
+ <!-- _____________________________________________________________________________________________________________________________ -->
+<!-- MISSION section -->
+<link rel="stylesheet" href="/static/css/2.css">
+<div class="container">
+  <!-- TITLE START -->
+  <div class="section-head">
+      <div class="header-design">
+          <h2 class="sep-line-one"><span class="font-weight-300" style="color:#ffc107;">A STEP AHEAD</span> FOR SAFER INDIA</h2>
+      </div>
+  </div>
+  <!-- TITLE END -->
+  
+  <div class="content-wrapper">
+    <div class="image-container">
+      <img src="https://www.potholerepairindia.com/images/product-escape.png" alt="InsstaPattch Product Image" class="product-image">
+    </div>
+    <div class="text-container">
+      <p class="text-justify">
+        Across India, <strong>poor road infrastructure</strong>—from potholes to broken pavements and incomplete repairs—continues to be a major civic challenge. Every monsoon season, the problem escalates, leading to <strong>traffic chaos, public frustration</strong>, and more tragically, <strong>thousands of avoidable accidents</strong>.
+      </p>
+  
+      <p class="text-justify">
+        In fact, official data reports <strong>over 11,000 road accidents annually</strong> caused by potholes and related road hazards. These aren’t just cracks in concrete—they’re cracks in the system.
+      </p>
+  
+      <p class="text-justify">
+        At the heart of the issue lies a <strong>breakdown in coordination</strong>. Civil departments often operate in silos. Communication between the public, government agencies, and elected representatives is fragmented. Complaints are either delayed, dismissed, or lost in red tape. The result? Roads remain broken—and so does public trust.
+      </p>
+    </div>
+  </div>
+  
+  <div class="road-inssta">
+    <p class="text-justify">
+      <span class="highlight">Fixing roads isn't just maintenance</span>—it's a step towards restoring <span class="highlight">public confidence</span> and improving the <span class="highlight">quality of life</span>. The road to a better India is paved with better roads.
+    </p>
+  </div>
+  
+  <div class="row">
+    <div class="col-left">
+      <p class="text-justify">
+        An integrated solution that brings <strong>transparency, accountability, and efficiency</strong> into pothole repair is needed. Through tech-enabled reporting, centralized dashboards, and quick action mechanisms, India can combat this deeply-rooted civic issue—ensuring roads are not just built, but maintained and trusted.
+      </p>
+    </div>
+    <!-- <div class="col-right">
+      <img src="https://www.potholerepairindia.com/images/escap.png" alt="ESCAP Logo" class="escap-logo">
+    </div> -->
+  </div>
+  
+</div>
+
+<!-- ---------------------------------------------------------- -->
+
+<link rel="stylesheet" href="/static/css/1.css">
+<div class="section-full mobile-page-padding p-b50 square_shape2">
+  <div class="section-content">
+      <div class="Service-half-top p-t80 bg-dark bg-moving" style="background-image: url('https://www.potholerepairindia.com/images/background/bg-6.png');">
+          <div class="container">
+              <!-- TITLE START -->
+              <div class="section-head text-white"> 
+                  <div class="mt-separator-outer separator-left">
+                      <div class="mt-separator">
+                          <h2 class="text-white text-uppercase sep-line-one"><span class="font-weight-300 text-primary" "></span> Services</h2>
+                      </div>
+                  </div>
+                  <h3 style="color: #ffc107;">In our work we have pride, quality is what we provide.</h3>
+              </div>                  
+              <!-- TITLE END -->
+          </div>
+      </div>
+      <div class="services-half-bottom">
+        <div class="container">
+          <div class="row">
+      
+            <!-- National Highways -->
+            <div class="grams-service indiarip-infra">
+              <div class="mt-icon-box-wraper m-b30">
+                <div class="relative icon-count-2 bg-gray p-a30 p-tb50">
+                  <div class="icon-md inline-icon m-b15 text-primary scale-in-center" style="display:block">
+                    <span class="icon-cell">
+                      <img src="https://www.potholerepairindia.com/images/icon/highaway-grams.png" alt="Highway Icon">
+                    </span>
+                  </div>
+                  <div class="icon-content">
+                    <h5 class="mt-tilte m-b25" style="font-weight:800">National Highways <br>Patch Repairing Work</h5>
+                    <p>Swift and durable patching solutions for India's highway network, ensuring smoother travel and reduced accident risk through real-time reporting.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+      
+            <!-- Municipal Roads -->
+            <div class="grams-service">
+              <div class="mt-icon-box-wraper m-b30">
+                <div class="relative icon-count-2 bg-gray p-a30 p-tb50">
+                  <div class="icon-md inline-icon m-b15 text-primary scale-in-center" style="display:block">
+                    <span class="icon-cell">
+                      <img src="https://www.potholerepairindia.com/images/icon/making-grams.png" alt="Municipal Icon">
+                    </span>
+                  </div>
+                  <div class="icon-content">
+                    <h5 class="mt-tilte m-b25" style="font-weight:800">Municipal Corporation Road Pothole Repairing</h5>
+                    <p>Collaborating with municipal bodies to identify, report, and repair urban potholes—improving everyday mobility for citizens across towns and cities.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+      
+            <!-- Airports -->
+            <div class="grams-service">
+              <div class="mt-icon-box-wraper m-b30">
+                <div class="relative icon-count-2 bg-gray p-a30 p-tb50">
+                  <div class="icon-md inline-icon m-b15 text-primary scale-in-center" style="display:block">
+                    <span class="icon-cell">
+                      <img src="https://www.potholerepairindia.com/images/icon/plane-landing.png" alt="Airport Icon">
+                    </span>
+                  </div>
+                  <div class="icon-content">
+                    <h5 class="mt-tilte m-b25" style="font-weight:800">Airport Runway Patch Repairing</h5>
+                    <p>Specialized surface patching for airport runways and taxiways to ensure seamless operations and passenger safety, in collaboration with airport authorities.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+      
+            <!-- Railways -->
+            <div class="grams-service">
+              <div class="mt-icon-box-wraper m-b30">
+                <div class="relative icon-count-2 bg-gray p-a30 p-tb50">
+                  <div class="icon-md inline-icon m-b15 text-primary scale-in-center" style="display:block">
+                    <span class="icon-cell">
+                      <img src="https://www.potholerepairindia.com/images/icon/crossing-grams.png" alt="Railway Icon">
+                    </span>
+                  </div>
+                  <div class="icon-content">
+                    <h5 class="mt-tilte m-b25" style="font-weight:800">Railway Level Crossing Patch Works</h5>
+                    <p>Targeted repair work at railway crossings to prevent damage to vehicles and reduce bottlenecks, in sync with Indian Railways infrastructure guidelines.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+      
+            <!-- Corporate and Residential Colonies -->
+            <div class="grams-service">
+              <div class="mt-icon-box-wraper m-b30">
+                <div class="relative icon-count-2 bg-gray p-a30 p-tb50">
+                  <div class="icon-md inline-icon m-b15 text-primary scale-in-center" style="display:block">
+                    <span class="icon-cell">
+                      <img src="https://www.potholerepairindia.com/images/icon/internal-grams.png" alt="Corporate Icon">
+                    </span>
+                  </div>
+                  <div class="icon-content">
+                    <h5 class="mt-tilte m-b25" style="font-weight:800">Colony & Corporate Road Patch Repairing</h5>
+                    <p>Quick response patching services for internal roads in residential colonies, corporate campuses, and gated communities—ensuring safety and visual appeal.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+      
+          </div>
+        </div>
+      </div>
+      
+      </div>
+  </div>
+  <div class="hilite-title text-left p-l50 text-uppercase">
+      <span class="three-d-title">SERVICES</span>
+  </div>                    
+</div>
+<script>
+  // Background animation
+  let bgPosition = 0;
+  const bgElement = document.querySelector('.bg-moving');
+  
+  function animateBackground() {
+      bgPosition -= 1; // Move background left
+      if (bgElement) {
+          bgElement.style.backgroundPosition = `${bgPosition}px 0px`;
+          requestAnimationFrame(animateBackground);
+      }
+  }
+  
+  // Apply enhanced hover effect to service boxes
+  const serviceBoxes = document.querySelectorAll('.mt-icon-box-wraper');
+  
+  // Add staggered animation for initial load
+  serviceBoxes.forEach((box, index) => {
+      // Add delay to each service box for staggered appearance
+      setTimeout(() => {
+          const scaleElement = box.querySelector('.scale-in-center');
+          if (scaleElement) {
+              scaleElement.style.animationDelay = `${index * 0.2}s`;
+              scaleElement.style.animationPlayState = 'running';
+          }
+          
+          // Force reflow/repaint
+          box.offsetHeight;
+          
+          // Add class for visibility
+          box.classList.add('visible');
+      }, index * 200);
+      
+      // Add mouse events
+      box.addEventListener('mouseenter', () => {
+          box.style.transform = 'translateY(-15px) scale(1.03)';
+          box.style.boxShadow = '0 15px 30px rgba(0,0,0,0.15)';
+          box.style.zIndex = '5';
+      });
+      
+      box.addEventListener('mouseleave', () => {
+          box.style.transform = 'translateY(0) scale(1)';
+          box.style.boxShadow = '0 0 10px rgba(0,0,0,0.05)';
+          box.style.zIndex = '1';
+      });
+  });
+  
+  // Fix title positions and add effects
+  function setupTitleEffects() {
+      const titles3D = document.querySelectorAll('.three-d-title');
+      
+      titles3D.forEach((title, index) => {
+          // Ensure proper positioning of title container
+          const titleContainer = title.parentElement;
+          titleContainer.style.position = 'relative';
+          titleContainer.style.overflow = 'visible';
+          titleContainer.style.height = 'auto';
+          titleContainer.style.marginBottom = '40px'; // Add space below the title
+          
+          // Set different styles based on title content
+          const titleText = title.textContent.trim();
+          
+          // Create shadow element
+          const shadowElement = document.createElement('div');
+          shadowElement.className = 'title-shadow';
+          
+          // Insert the shadow after the title
+          titleContainer.appendChild(shadowElement);
+          
+          // Add appropriate animation based on title
+          if (titleText === "SERVICES") {
+              // Add class for specific styling
+              title.classList.add('hovering-title');
+              title.classList.add('services-title');
+              // Set shadow for SERVICES
+              shadowElement.style.width = `${title.offsetWidth * 0.9}px`;
+              shadowElement.style.top = `${title.offsetHeight + 10}px`;
+          } else if (titleText === "Mission") {
+              // Add class for mission title
+              title.classList.add('hovering-title');
+              title.classList.add('mission-title');
+             
+              // Set shadow for Mission
+              shadowElement.style.width = `${title.offsetWidth * 0.9}px`;
+              shadowElement.style.top = `${title.offsetHeight + 10}px`;
+          }
+          
+          // Start the shadow animation
+          animateShadow(title, shadowElement);
+      });
+      
+      // Start hover animation for all hovering titles
+      animateHoveringTitles();
+  }
+  
+  // Animate both titles with up/down motion
+  function animateHoveringTitles() {
+      const hoveringTitles = document.querySelectorAll('.hovering-title');
+      
+      // Create different patterns for each title to make them slightly out of sync
+      hoveringTitles.forEach((title, index) => {
+          let positionY = 0;
+          let direction = index % 2 === 0 ? 1 : -1; // Start in opposite directions
+          let speed = 0.1 + (index * 0.02); // Slightly different speeds
+          
+          function updatePosition() {
+              // Move up and down
+              positionY += speed * direction;
+              
+              // Reverse direction at limits (4px up and down)
+              if (positionY > 4 || positionY < -4) {
+                  direction *= -1;
+              }
+              
+              // Apply the new position
+              title.style.transform = `translateY(${positionY}px) rotateX(0deg)`;
+              
+              // Continue animation
+              requestAnimationFrame(updatePosition);
+          }
+          
+          // Wait for initial animation to complete, with staggered starts
+          setTimeout(() => {
+              updatePosition();
+          }, 1500 + (index * 200)); // Staggered start time
+      });
+  }
+  
+  // Animate the shadow with subtle movement
+  function animateShadow(titleElement, shadowElement) {
+      let shadowOffset = 0;
+      let direction = 1;
+      
+      function updateShadow() {
+          // Get title dimensions and position
+          const titleRect = titleElement.getBoundingClientRect();
+          const containerRect = titleElement.parentElement.getBoundingClientRect();
+          
+          // Calculate relative position within the container
+          const relativeLeft = titleRect.left - containerRect.left;
+          
+          // Update shadow position
+          shadowElement.style.left = `${relativeLeft + shadowOffset}px`;
+          
+          // For hovering titles, adjust shadow position based on the hover
+          if (titleElement.classList.contains('hovering-title')) {
+              // Get computed transform
+              const transform = window.getComputedStyle(titleElement).transform;
+              const matrix = new DOMMatrix(transform);
+              const translateY = matrix.m42 || 0; // Get the Y translation value
+              
+              // Adjust shadow position based on title position (further when title is higher)
+              shadowElement.style.top = `${titleRect.height + 10 + Math.abs(translateY/2)}px`;
+              
+              // Make shadow more transparent when title is higher
+              const opacityFactor = 0.4 - (Math.abs(translateY) / 50);
+              shadowElement.style.opacity = opacityFactor.toFixed(2);
+          }
+          
+          // Move shadow slightly for animation effect
+          shadowOffset += 0.2 * direction;
+          
+          // Reverse direction when reaching limits
+          if (shadowOffset > 5 || shadowOffset < -5) {
+              direction *= -1;
+          }
+          
+          requestAnimationFrame(updateShadow);
+      }
+      
+      updateShadow();
+  }
+  
+  // Initialize animations when page loads
+  document.addEventListener('DOMContentLoaded', () => {
+      // Fix layout issues first
+      fixLayoutIssues();
+      
+      // Start the background animation
+      animateBackground();
+      
+      // Add shadow elements and title effects
+      setupTitleEffects();
+      
+      // Make sure all 3D titles are fully visible
+      const titles3D = document.querySelectorAll('.three-d-title');
+      
+      // Ensure the 3D animation runs properly for all titles
+      titles3D.forEach((title, index) => {
+          title.style.opacity = '1';
+          title.style.visibility = 'visible';
+          
+          // Add staggered animation for multiple titles
+          title.style.animationDelay = `${index * 0.3}s`;
+          title.style.animationDuration = '1.2s';
+          title.style.animationName = 'fadeIn3DTitle';
+      });
+      
+      // Restart animations for icons
+      const icons = document.querySelectorAll('.scale-in-center');
+      icons.forEach((icon, index) => {
+          // Reset and restart animation with staggered timing
+          icon.style.animation = 'none';
+          icon.offsetHeight; // Trigger reflow
+          icon.style.animation = `scale-in-center 1s ${index * 0.2}s cubic-bezier(0.250, 0.460, 0.450, 0.940) both`;
+      });
+      
+      // Ensure full visibility of the section
+      const sectionFull = document.querySelector('.section-full');
+      if (sectionFull) {
+          sectionFull.style.overflow = 'visible';
+      }
+  });
+  
+  // Fix layout issues to prevent title overlap
+  function fixLayoutIssues() {
+      // Helper function to find elements containing specific text
+      if (typeof jQuery !== 'undefined') {
+          jQuery.expr[':'].contains = function(a, i, m) {
+              return jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
+          };
+          
+          const $missionTitle = jQuery('.three-d-title:contains("Mission")').parent();
+          if ($missionTitle.length) {
+              $missionTitle.css({
+                  'clear': 'both',
+                  'display': 'block',
+                  'position': 'relative',
+                  'margin-top': '30px',
+                  'padding-top': '20px',
+                  'overflow': 'visible',
+                  'height': 'auto'
+              });
+          }
+      } else {
+          // Pure JS version
+          document.querySelectorAll('.hilite-title').forEach(container => {
+              if (container.textContent.includes('Mission')) {
+                  container.style.clear = 'both';
+                  container.style.display = 'block';
+                  container.style.position = 'relative';
+                  container.style.marginTop = '30px';
+                  container.style.paddingTop = '20px';
+                  container.style.overflow = 'visible';
+                  container.style.height = 'auto';
+              }
+          });
+      }
+  }
+  
+  // Force re-trigger animations when scrolled into view
+  function isElementInViewport(el) {
+      const rect = el.getBoundingClientRect();
+      return (
+          rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+          rect.bottom >= 0
+      );
+  }
+  
+  function handleScroll() {
+      const section = document.querySelector('.section-full');
+      if (section && isElementInViewport(section)) {
+          // Reset and restart all animations
+          const icons = document.querySelectorAll('.scale-in-center');
+          icons.forEach((icon, index) => {
+              icon.style.animation = 'none';
+              icon.offsetHeight; // Trigger reflow
+              icon.style.animation = `scale-in-center 1s ${index * 0.2}s cubic-bezier(0.250, 0.460, 0.450, 0.940) both`;
+          });
+          
+          // Reset and restart title animations
+          const titles3D = document.querySelectorAll('.three-d-title');
+          titles3D.forEach((title, index) => {
+              title.style.animation = 'none';
+              title.offsetHeight; // Trigger reflow
+              title.style.animation = `fadeIn3DTitle 1.2s ${index * 0.3}s forwards`;
+          });
+          
+          // Remove scroll listener once triggered
+          window.removeEventListener('scroll', handleScroll);
+      }
+  }
+  
+  window.addEventListener('scroll', handleScroll);
+  
+  // Add a custom animation for the 3D titles and shadows if not already defined in CSS
+  if (!document.querySelector('#title-animations')) {
+      const styleSheet = document.createElement('style');
+      styleSheet.id = 'title-animations';
+      styleSheet.textContent = `
+          @keyframes fadeIn3DTitle {
+              0% {
+                  opacity: 0;
+                  transform: translateY(20px) rotateX(30deg);
+                  text-shadow: 0 0 0 rgba(0,0,0,0);
+              }
+              100% {
+                  opacity: 1;
+                  transform: translateY(0) rotateX(0deg);
+                  text-shadow: 1px 1px 0 #ccc, 2px 2px 0 #999, 3px 3px 0 #666;
+              }
+          }
+          
+          .three-d-title {
+              display: inline-block;
+              opacity: 0;
+              transform: translateY(20px);
+              animation: fadeIn3DTitle 1.2s forwards;
+              transform-style: preserve-3d;
+              perspective: 1000px;
+              position: relative;
+              z-index: 2;
+              transition: transform 0.3s ease-out;
+          }
+          
+          /* Special styling for hovering titles */
+          .hovering-title {
+              will-change: transform;
+              transition: transform 0.5s cubic-bezier(0.42, 0, 0.58, 1);
+          }
+          
+          /* Specific style for Mission title to prevent overlap */
+          .mission-title {
+              display: block;
+              clear: both;
+              margin-top: 20px;
+          }
+          
+          /* Fix for title container */
+          .hilite-title {
+              overflow: visible !important;
+              position: relative !important;
+              z-index: 1;
+          }
+          
+          @keyframes shadowPulse {
+              0% {
+                  opacity: 0.2;
+                  transform: scaleX(0.8);
+              }
+              50% {
+                  opacity: 0.4;
+                  transform: scaleX(1);
+              }
+              100% {
+                  opacity: 0.2;
+                  transform: scaleX(0.8);
+              }
+          }
+          
+          .title-shadow {
+              position: absolute;
+              height: 10px;
+              background: radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 70%);
+              border-radius: 50%;
+              z-index: 1;
+              animation: shadowPulse 3s infinite;
+              transform-origin: center center;
+              filter: blur(3px);
+              transition: opacity 0.3s ease, top 0.3s ease;
+          }
+      `;
+      document.head.appendChild(styleSheet);
+  }
+  </script>
+  <!-- _____________________________________________________________________________________________________________________________ -->
+  
+
+<br><br><br><br>
+<!-- _______________________________________________________________________________________________________________________________ -->
+     <!-- Call To Action Section -->
+     <section id="call-to-action" class="call-to-action section dark-background">
+
+      <img src="https://images.pexels.com/photos/2129796/pexels-photo-2129796.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="City Navigation">
+    
+      <div class="container">
+        <div class="row justify-content-center" data-aos="zoom-in" data-aos-delay="100">
+          <div class="col-xl-10">
+            <div class="text-center">
+              <h3>Seamless City Navigation</h3>
+              <p>Navigate your city like never before! Access real-time public transport data, compare fares, and find the fastest routes. From nearby scooty rentals to metro timings and bus schedules — everything you need is at your fingertips. Plan smarter, travel better, and experience hassle-free commuting.</p>
+              
+              <!-- From Uiverse.io by 0xnihilism --> 
+              <button class="brutalist-button">
+                <div class="button-text">
+                  <span>Get it from</span>
+                  <span>Microsoft</span>
+                </div>
+              </button>
+    
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    </section>
+    
+<!-- _____________________________________________________________________________________________________________________________ -->
+  
+    
+
+    
+
+
+    
+
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Projects</h2>
+        <p>Check our Works</p>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+
+        <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+
+          <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
+            <li data-filter="*" class="filter-active">All</li>
+            <li data-filter=".filter-app">Public Transport</li>
+            <li data-filter=".filter-product">Rental Services</li>
+            <li data-filter=".filter-branding">Fuel & Charging</li>
+          </ul><!-- End Portfolio Filters -->
+
+          <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
+              <img src="static/images/masonry-portfolio/blue-bus.avif" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>App 1</h4>
+                <p>Lorem ipsum, dolor sit</p>
+                <a href="static/images/masonry-portfolio/blue-bus.avif" title="App 1" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
+              <img src="static/images/masonry-portfolio/comp_1_11zon.jpg" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>Product 1</h4>
+                <p>Lorem ipsum, dolor sit</p>
+                <a href="static/images/masonry-portfolio/comp_1_11zon.jpg" title="Product 1" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
+              <img src="static/images/masonry-portfolio/pump_5_11zon.jpg" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>Branding 1</h4>
+                <p>Lorem ipsum, dolor sit</p>
+                <a href="static/images/masonry-portfolio/pump_5_11zon.jpg" title="Branding 1" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
+              <img src="static/images/masonry-portfolio/metro.jpg" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>App 2</h4>
+                <p>Lorem ipsum, dolor sit</p>
+                <a href="static/images/masonry-portfolio/metro.jpg" title="App 2" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
+              <img src="static/images/masonry-portfolio/Taxi-Service-available-for-Haldwani-Nainital-Jim-Corbett-National-Park-768x507_11_11zon.jpg" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>Product 2</h4>
+                <p>Lorem ipsum, dolor sit</p>
+                <a href="static/images/masonry-portfolio/Taxi-Service-available-for-Haldwani-Nainital-Jim-Corbett-National-Park-768x507_11_11zon.jpg" title="Product 2" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
+              <img src="static/images/masonry-portfolio/ev_stations_7_11zon.jpg" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>Branding 2</h4>
+                <p>Lorem ipsum, dolor sit</p>
+                <a href="static/images/masonry-portfolio/ev_stations_7_11zon.jpg" title="Branding 2" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
+              <img src="static/images/masonry-portfolio/istockphoto-1414019690-612x612.jpg" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>App 3</h4>
+                <p>Lorem ipsum, dolor sit</p>
+                <a href="static/images/masonry-portfolio/istockphoto-1414019690-612x612.jpg" title="App 3" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
+              <img src="static/images/masonry-portfolio/download.jpg" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>Product 3</h4>
+                <p>Lorem ipsum, dolor sit</p>
+                <a href="static/images/masonry-portfolio/download.jpg" title="Product 3" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
+              <img src="static/images/masonry-portfolio/map-home.jpg" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>Branding 3</h4>
+                <p>Lorem ipsum, dolor sit</p>
+                <a href="static/images/masonry-portfolio/map-home.jpg" title="Branding 2" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+              </div>
+            </div>
+            
+            
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
+              <img src="static/images/masonry-portfolio/bike.jpg" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>Product 3</h4>
+                <p>Lorem ipsum, dolor sit</p>
+                <a href="static/images/masonry-portfolio/bike.jpg" title="Product 3" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+              </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
+              <img src="static/images/masonry-portfolio/sedan.jpg" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>Product 3</h4>
+                <p>Lorem ipsum, dolor sit</p>
+                <a href="static/images/masonry-portfolio/sedan.jpg" title="Product 3" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+
+
+          </div><!-- End Portfolio Container -->
+
+        </div>
+
+      </div>
+
+    </section><!-- /Portfolio Section -->
+
+    <!-- Stats Section -->
+    <section id="stats" class="stats section">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-4 align-items-center justify-content-between">
+
+          <div class="col-lg-5">
+            <img src="static/images/stats-img.jpg" alt="" class="img-fluid">
+          </div>
+
+          <div class="col-lg-6">
+
+            <h3 class="fw-bold fs-2 mb-3">Voluptatem dignissimos provident quasi</h3>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit
+            </p>
+
+            <div class="row gy-4">
+
+              <div class="col-lg-6">
+                <div class="stats-item d-flex">
+                  <i class="bi bi-emoji-smile flex-shrink-0"></i>
+                  <div>
+                    <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1" class="purecounter"></span>
+                    <p><strong>Happy Clients</strong> <span>consequuntur quae</span></p>
+                  </div>
+                </div>
+              </div><!-- End Stats Item -->
+
+              <div class="col-lg-6">
+                <div class="stats-item d-flex">
+                  <i class="bi bi-journal-richtext flex-shrink-0"></i>
+                  <div>
+                    <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1" class="purecounter"></span>
+                    <p><strong>Projects</strong> <span>adipisci atque cum quia aut</span></p>
+                  </div>
+                </div>
+              </div><!-- End Stats Item -->
+
+              <div class="col-lg-6">
+                <div class="stats-item d-flex">
+                  <i class="bi bi-headset flex-shrink-0"></i>
+                  <div>
+                    <span data-purecounter-start="0" data-purecounter-end="1453" data-purecounter-duration="1" class="purecounter"></span>
+                    <p><strong>Hours Of Support</strong> <span>aut commodi quaerat</span></p>
+                  </div>
+                </div>
+              </div><!-- End Stats Item -->
+
+              <div class="col-lg-6">
+                <div class="stats-item d-flex">
+                  <i class="bi bi-people flex-shrink-0"></i>
+                  <div>
+                    <span data-purecounter-start="0" data-purecounter-end="32" data-purecounter-duration="1" class="purecounter"></span>
+                    <p><strong>Hard Workers</strong> <span>rerum asperiores dolor</span></p>
+                  </div>
+                </div>
+              </div><!-- End Stats Item -->
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section><!-- /Stats Section -->
+
+    <!-- Testimonials Section 
+    <section id="testimonials" class="testimonials section dark-background">
+
+      <img src="static/images/testimonials-bg.jpg" class="testimonials-bg" alt="">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="swiper init-swiper">
+          <script type="application/json" class="swiper-config">
+            {
+              "loop": true,
+              "speed": 600,
+              "autoplay": {
+                "delay": 5000
+              },
+              "slidesPerView": "auto",
+              "pagination": {
+                "el": ".swiper-pagination",
+                "type": "bullets",
+                "clickable": true
+              }
+            }
+          </script>
+          <div class="swiper-wrapper">
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <img src="static/images/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
+                <h3>Saul Goodman</h3>
+                <h4>Ceo &amp; Founder</h4>
+                <div class="stars">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </div>
+                <p>
+                  <i class="bi bi-quote quote-icon-left"></i>
+                  <span>Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.</span>
+                  <i class="bi bi-quote quote-icon-right"></i>
+                </p>
+              </div>
+            </div>
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <img src="static/images/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
+                <h3>Sara Wilsson</h3>
+                <h4>Designer</h4>
+                <div class="stars">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </div>
+                <p>
+                  <i class="bi bi-quote quote-icon-left"></i>
+                  <span>Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.</span>
+                  <i class="bi bi-quote quote-icon-right"></i>
+                </p>
+              </div>
+            </div>
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <img src="static/images/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
+                <h3>Jena Karlis</h3>
+                <h4>Store Owner</h4>
+                <div class="stars">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </div>
+                <p>
+                  <i class="bi bi-quote quote-icon-left"></i>
+                  <span>Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.</span>
+                  <i class="bi bi-quote quote-icon-right"></i>
+                </p>
+              </div>
+            </div>
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <img src="static/images/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
+                <h3>Matt Brandon</h3>
+                <h4>Freelancer</h4>
+                <div class="stars">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </div>
+                <p>
+                  <i class="bi bi-quote quote-icon-left"></i>
+                  <span>Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat minim velit minim dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.</span>
+                  <i class="bi bi-quote quote-icon-right"></i>
+                </p>
+              </div>
+            </div>
+
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <img src="static/images/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
+                <h3>John Larson</h3>
+                <h4>Entrepreneur</h4>
+                <div class="stars">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </div>
+                <p>
+                  <i class="bi bi-quote quote-icon-left"></i>
+                  <span>Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam enim culpa labore duis sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.</span>
+                  <i class="bi bi-quote quote-icon-right"></i>
+                </p>
+              </div>
+            </div>
+
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+
+      </div>
+
+    </section> -->
+
+    <!-- Team Section
+
+    <section id="team" class="team section">
+
+     
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Team</h2>
+        <p>our Team</p>
+      </div>
+
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
+            <div class="team-member">
+              <div class="member-img">
+                <img src="static/images/team/team-1.jpg" class="img-fluid" alt="">
+                <div class="social">
+                  <a href=""><i class="bi bi-twitter-x"></i></a>
+                  <a href=""><i class="bi bi-facebook"></i></a>
+                  <a href=""><i class="bi bi-instagram"></i></a>
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                </div>
+              </div>
+              <div class="member-info">
+                <h4>Walter White</h4>
+                <span>Chief Executive Officer</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
+            <div class="team-member">
+              <div class="member-img">
+                <img src="static/images/team/team-2.jpg" class="img-fluid" alt="">
+                <div class="social">
+                  <a href=""><i class="bi bi-twitter-x"></i></a>
+                  <a href=""><i class="bi bi-facebook"></i></a>
+                  <a href=""><i class="bi bi-instagram"></i></a>
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                </div>
+              </div>
+              <div class="member-info">
+                <h4>Sarah Jhonson</h4>
+                <span>Product Manager</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="300">
+            <div class="team-member">
+              <div class="member-img">
+                <img src="static/images/team/team-3.jpg" class="img-fluid" alt="">
+                <div class="social">
+                  <a href=""><i class="bi bi-twitter-x"></i></a>
+                  <a href=""><i class="bi bi-facebook"></i></a>
+                  <a href=""><i class="bi bi-instagram"></i></a>
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                </div>
+              </div>
+              <div class="member-info">
+                <h4>William Anderson</h4>
+                <span>CTO</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="400">
+            <div class="team-member">
+              <div class="member-img">
+                <img src="static/images/team/team-4.jpg" class="img-fluid" alt="">
+                <div class="social">
+                  <a href=""><i class="bi bi-twitter-x"></i></a>
+                  <a href=""><i class="bi bi-facebook"></i></a>
+                  <a href=""><i class="bi bi-instagram"></i></a>
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                </div>
+              </div>
+              <div class="member-info">
+                <h4>Amanda Jepson</h4>
+                <span>Accountant</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section> -->
+  
+    <!-- Contact Section -->
+    <section id="contact" class="contact section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Contact</h2>
+        <p>Contact Us</p>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="mb-4" data-aos="fade-up" data-aos-delay="200">
+          <iframe style="border:0; width: 100%; height: 270px;" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d48389.78314118045!2d-74.006138!3d40.710059!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a22a3bda30d%3A0xb89d1fe6bc499443!2sDowntown%20Conference%20Center!5e0!3m2!1sen!2sus!4v1676961268712!5m2!1sen!2sus" frameborder="0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div><!-- End Google Maps -->
+
+        <div class="row gy-4">
+
+          <div class="col-lg-4">
+            <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="300">
+              <i class="bi bi-geo-alt flex-shrink-0"></i>
+              <div>
+                <h3>Address</h3>
+                <p>A108 Adam Street, New York, NY 535022</p>
+              </div>
+            </div><!-- End Info Item -->
+
+            <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
+              <i class="bi bi-telephone flex-shrink-0"></i>
+              <div>
+                <h3>Call Us</h3>
+                <p>+1 5589 55488 55</p>
+              </div>
+            </div><!-- End Info Item -->
+
+            <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="500">
+              <i class="bi bi-envelope flex-shrink-0"></i>
+              <div>
+                <h3>Email Us</h3>
+                <p>info@example.com</p>
+              </div>
+            </div><!-- End Info Item -->
+
+          </div>
+
+          <div class="col-lg-8">
+            <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+              <div class="row gy-4">
+
+                <div class="col-md-6">
+                  <input type="text" name="name" class="form-control" placeholder="Your Name" required="">
+                </div>
+
+                <div class="col-md-6 ">
+                  <input type="email" class="form-control" name="email" placeholder="Your Email" required="">
+                </div>
+
+                <div class="col-md-12">
+                  <input type="text" class="form-control" name="subject" placeholder="Subject" required="">
+                </div>
+
+                <div class="col-md-12">
+                  <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
+                </div>
+
+                <div class="col-md-12 text-center">
+                  <div class="loading">Loading</div>
+                  <div class="error-message"></div>
+                  <div class="sent-message">Your message has been sent. Thank you!</div>
+
+                  <button type="submit">Send Message</button>
+                </div>
+
+              </div>
+            </form>
+          </div><!-- End Contact Form -->
+
+        </div>
+
+      </div>
+
+    </section><!-- /Contact Section -->
+
+  </main>
+
+  <footer id="footer" class="footer dark-background">
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-4 col-md-6 footer-about">
+            <a href="index.html" class="logo d-flex align-items-center">
+              <span class="sitename">Navic</span>
+            </a>
+            <div class="footer-contact pt-3">
+              <p>A108 Adam Street</p>
+              <p>New York, NY 535022</p>
+              <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
+              <p><strong>Email:</strong> <span>info@example.com</span></p>
+            </div>
+            <div class="social-links d-flex mt-4">
+              <a href=""><i class="bi bi-twitter-x"></i></a>
+              <a href=""><i class="bi bi-facebook"></i></a>
+              <a href=""><i class="bi bi-instagram"></i></a>
+              <a href=""><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-3 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              <li><i class="bi bi-chevron-right"></i> <a href="#"> Home</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#"> About us</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#"> Services</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#"> Terms of service</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#"> Privacy policy</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-2 col-md-3 footer-links">
+            <h4>Our Services</h4>
+            <ul>
+              <li><i class="bi bi-chevron-right"></i> <a href="#"> Web Design</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#"> Web Development</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#"> Product Management</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#"> Marketing</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#"> Graphic Design</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-12 footer-newsletter">
+            <h4>Our Newsletter</h4>
+            <p>Subscribe to our newsletter and receive the latest news about our products and services!</p>
+            <form action="forms/newsletter.php" method="post" class="php-email-form">
+              <div class="newsletter-form"><input type="email" name="email"><input type="submit" value="Subscribe"></div>
+              <div class="loading">Loading</div>
+              <div class="error-message"></div>
+              <div class="sent-message">Your subscription request has been sent. Thank you!</div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="copyright">
+      <div class="container text-center">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">Navic</strong> <span>All Rights Reserved</span></p>
+        <div class="credits">
+          <!-- All the links in the footer should remain intact. -->
+          <!-- You can delete the links only if you've purchased the pro version. -->
+          <!-- Licensing information: https://bootstrapmade.com/license/ -->
+          <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+         
+        </div>
+      </div>
+    </div>
+
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="static/vendor/php-email-form/validate.js"></script>
+  <script src="static/vendor/aos/aos.js"></script>
+  <script src="static/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="static/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="static/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="static/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="static/vendor/purecounter/purecounter_vanilla.js"></script>
+
+  <!-- Main JS File -->
+  <script src="static/js/main.js"></script>
+
 </body>
 
 </html>
