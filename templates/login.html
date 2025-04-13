@@ -1,7 +1,553 @@
-<h2>Login</h2>
+<!-- <h2>Login</h2>
 <form method="POST">
     Email: <input type="email" name="email" required><br>
     Password: <input type="password" name="password" required><br>
     <button type="submit">Login</button>
-</form>
-<a href="{{ url_for('register') }}">Don't have an account? Register here</a>
+</form> -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Citizen Login</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    
+    <link href="assets/img/favicon.jpg" rel="icon" />
+    <link
+      href="assets/img/Budget & Smart Travel Favicon.jpg"
+      rel="apple-touch-icon"
+    />
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Vendor CSS Files -->
+    <link
+      href="assets/vendor/bootstrap/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="assets/vendor/bootstrap-icons/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet" />
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+    <link
+      href="assets/vendor/glightbox/css/glightbox.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Main CSS File -->
+    <!-- <link href="assets/css/main.css" rel="stylesheet" /> -->
+    <style>
+      /* Base styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", "Roboto", sans-serif;
+      }
+
+      body {
+        background-color: #f5f5f5;
+        line-height: 1.6;
+      }
+
+      /* Navigation styles */
+      .navmenu {
+        background-color: #fff;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 100;
+        padding: 10px 0;
+      }
+
+      .navmenu ul {
+        display: flex;
+        list-style: none;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        margin: 0;
+      }
+
+      .navmenu li {
+        position: relative;
+      }
+
+      .navmenu a {
+        display: flex;
+        align-items: center;
+        color: #37517e;
+        padding: 10px 15px;
+        text-decoration: none;
+        transition: 0.3s;
+        font-size: 15px;
+        font-weight: 500;
+      }
+
+      .navmenu a:hover,
+      .navmenu .active {
+        color: #47b2e4;
+      }
+
+      .navmenu .dropdown ul {
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 100%;
+        background: #fff;
+        padding: 10px 0;
+        z-index: 99;
+        opacity: 0;
+        visibility: hidden;
+        box-shadow: 0 0 30px rgba(127, 137, 161, 0.25);
+        transition: 0.3s;
+        border-radius: 4px;
+        min-width: 200px;
+      }
+
+      .navmenu .dropdown:hover > ul {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .navmenu .dropdown ul li {
+        min-width: 200px;
+      }
+
+      .navmenu .dropdown ul a {
+        padding: 10px 20px;
+        font-size: 14px;
+        text-transform: none;
+        font-weight: 500;
+      }
+
+      .navmenu .dropdown ul a:hover {
+        background-color: #f6f9fd;
+      }
+
+      .navmenu .dropdown .dropdown ul {
+        top: 0;
+        left: 100%;
+        visibility: hidden;
+      }
+
+      .navmenu .dropdown .dropdown:hover > ul {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .mobile-nav-toggle {
+        display: none;
+        cursor: pointer;
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        font-size: 24px;
+      }
+
+      /* Hero slider styles */
+      .hero {
+        position: relative;
+        width: 100%;
+        height: 80vh;
+        overflow: hidden;
+        margin-top: 70px;
+      }
+
+      .slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: opacity 0.3s ease-in-out;
+      }
+
+      .icon-box {
+        position: relative;
+        z-index: 20;
+        background: rgba(0, 0, 0, 0.7);
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        color: white;
+        transition: all 0.3s ease;
+      }
+
+      .icon-box:hover {
+        transform: translateY(-5px);
+      }
+
+      .nav-button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.5);
+        border: none;
+        color: white;
+        padding: 15px;
+        cursor: pointer;
+        z-index: 20;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .nav-button.prev {
+        left: 20px;
+      }
+
+      .nav-button.next {
+        right: 20px;
+      }
+
+      /* Login page styles */
+      .login_page {
+        background: url("/api/placeholder/1200/800") no-repeat center center;
+        background-size: cover;
+        min-height: 90vh;
+        margin-top: 0;
+        display: flex;
+        align-items: center;
+      }
+
+      .overlay {
+        background: rgba(0, 0, 0, 0.6);
+        min-height: 90vh;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 50px 0;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+        width: 100%;
+      }
+
+      .row-fluid {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+      }
+
+      .span8 {
+        width: 100%;
+        max-width: 480px;
+      }
+
+      .log_pading {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+      }
+
+      .loginpadding {
+        padding: 40px 30px;
+      }
+
+      .log_title {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .log_title h4 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+
+      .log_title p {
+        color: #666;
+        font-size: 14px;
+      }
+
+      .form_group {
+        margin-bottom: 25px;
+      }
+
+      .form_group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #333;
+        font-size: 14px;
+      }
+
+      .form_cntrl {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        transition: border-color 0.3s, box-shadow 0.3s;
+      }
+
+      .form_cntrl:focus {
+        border-color: #47b2e4;
+        box-shadow: 0 0 0 3px rgba(71, 178, 228, 0.2);
+        outline: none;
+      }
+
+      .mandatory {
+        color: #e03a3c;
+        margin-left: 3px;
+      }
+
+      .btn_login {
+        background-color: #47b2e4;
+        color: white;
+        padding: 12px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        width: 100%;
+        transition: background-color 0.3s;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .btn_login:hover {
+        background-color: #209dd8;
+      }
+
+      .validation01 {
+        color: #e03a3c;
+        font-size: 12px;
+        margin-top: 5px;
+        display: none;
+      }
+
+      .show {
+        display: block;
+      }
+
+      .hide {
+        display: none;
+      }
+
+      /* Responsive styles */
+      @media (max-width: 991px) {
+        .navmenu {
+          padding: 0;
+        }
+
+        .navmenu ul {
+          display: none;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          background: #fff;
+          box-shadow: 0 0 30px rgba(127, 137, 161, 0.25);
+          overflow-y: auto;
+          transition: 0.3s;
+          z-index: 9999;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .navmenu.mobile-nav-active ul {
+          display: block;
+        }
+
+        .navmenu li {
+          width: 100%;
+        }
+
+        .mobile-nav-toggle {
+          display: block;
+        }
+
+        .navmenu .dropdown ul {
+          position: static;
+          display: none;
+          opacity: 1;
+          visibility: visible;
+          box-shadow: none;
+          padding-left: 20px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .loginpadding {
+          padding: 30px 20px;
+        }
+
+        .log_title h4 {
+          font-size: 22px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .log_title h4 {
+          font-size: 20px;
+        }
+
+        .form_group {
+          margin-bottom: 20px;
+        }
+      }
+      .copyRightSection {
+        background: #ffffff;
+        padding: 20px 0;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+      }
+
+      .full {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+
+      .half {
+        flex: 1 1 50%;
+        color: #000;
+      }
+
+      .last {
+        text-align: right;
+      }
+
+      a {
+        color: #000;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <nav id="navmenu" class="navmenu">
+      <ul>
+        <li><a href="#hero" class="active">🏠 Dashboard</a></li>
+        <li><a href="#about">ℹ About Us</a></li>
+        <li><a href="#services">🚀 Explore</a></li>
+        <li><a href="#portfolio">🏙 Places to Visit</a></li>
+        <li><a href="#team">👥 Our Contributors</a></li>
+        <li class="dropdown">
+          <a href="#"
+            ><span>🚖 Transport Options</span> <i class="bi bi-chevron-down"></i
+          ></a>
+          <ul>
+            <li><a href="#">🏍 Scooty Rental</a></li>
+            <li class="dropdown">
+              <a href="#"
+                ><span>⚡ EV & Fuel Services</span>
+                <i class="bi bi-chevron-right"></i
+              ></a>
+              <ul>
+                <li><a href="#">🔋 EV Charging Stations</a></li>
+                <li><a href="#">⛽ Petrol Pumps Nearby</a></li>
+                <li><a href="#">🚶‍♂ Walking & Bicycle Routes</a></li>
+                <li><a href="#">📦 Porter Services</a></li>
+                <li><a href="#">💰 Price Comparison</a></li>
+              </ul>
+            </li>
+            <li><a href="#">🚍 Bus Routes & Timings</a></li>
+            <li><a href="#">🚖 Auto & E-Rickshaw</a></li>
+            <li><a href="#">🚆 Metro Guide</a></li>
+          </ul>
+        </li>
+        <li><a href="#contact">📞 Support & Help</a></li>
+      </ul>
+      <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+    </nav>
+
+    <div class="login_page">
+        <div class="overlay">
+          <div class="container">
+            <div class="row-fluid">
+              <div class="span8">
+                <div class="log_pading">
+                  <div class="loginpadding">
+                    <div class="log_title">
+                      <h4>Citizen Login</h4>
+                      <p>Welcome! Please log in to continue.</p>
+                    </div>
+                    <form method="POST" action="{{ url_for('login') }}">
+                      <div class="form_group">
+                        <label>Email <span class="mandatory">*</span></label>
+                        <input type="email" name="email" class="form_cntrl" placeholder="Enter your email" required />
+                      </div>
+                      <div class="form_group">
+                        <label>Password <span class="mandatory">*</span></label>
+                        <input type="password" name="password" class="form_cntrl" placeholder="Enter your password" required />
+                      </div>
+                      <button type="submit" class="btn_login">Login</button>
+                    </form>
+                    <div
+                        class="frget"
+                        style="text-align: center; margin-top: 20px">
+                        <h5>
+                          Don't have an account?
+                          <a href="{{ url_for('register') }}"><span>Register Now</span></a>
+                        </h5>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    <div class="copyRightSection">
+        <div class="container">
+          <div class="full">
+            <div class="half">
+              <p>&copy; 2025 Pune Municipal Corporation. All Rights Reserved.</p>
+            </div>
+            <div class="half last">
+              <p class="text-right">
+                Designed &amp; Developed by :
+                <a href="https://pmc.gov.in" target="_blank">Pune Municipal Corporation</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  </body>
+</html>
