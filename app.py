@@ -1,4 +1,5 @@
-# Required Libraries
+# --------------------- Required Libraries/ Dependencies --------------------------------
+
 import uuid 
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from pymongo import MongoClient
@@ -16,28 +17,45 @@ import numpy as np
 from datetime import datetime
 from flask import flash
 from math import radians, sin, cos, sqrt, atan2
+import joblib
+from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import RandomForestClassifier
 
+
+# --------------------- global Varibales & Initialization of App --------------------------------
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 bcrypt = Bcrypt(app)
 
+
+app.config['UPLOAD_FOLDER'] = 'static/images'
+app.config['ALLOWED_EXTENSIONS'] = {'jpg', 'jpeg', 'png', 'gif', 'webp','avif'}
+complaints=[]
+
+# --------------------- Roboflow Model Import --------------------------------
+
 rf = Roboflow(api_key="ZYZiqRfxocCQlUyr6YW9")
 project = rf.workspace().project("pothole-detection-i00zy")
 model = project.version(2).model
 
-client = MongoClient('mongodb://localhost:27017/')
+# --------------------- MongoDB Connections --------------------------------
 
+client = MongoClient('mongodb://localhost:27017/')
 db = client['pothole_app']
 users_collection = db['users']
 resolved_complaints_collection = db['resolved_complaints']
-
-
 complaints_collection = db['complaints']
-app.config['UPLOAD_FOLDER'] = 'static/images'
-app.config['ALLOWED_EXTENSIONS'] = {'jpg', 'jpeg', 'png', 'gif', 'webp','avif'}
 
-complaints=[]
+# --------------------- brigde imports --------------------------------
+
+model1 = joblib.load('models/bridge_life_model.pkl') 
+scaler = joblib.load('models/scaler.pkl')
+le_material = joblib.load('models/material_encoder.pkl')
+le_maintenance = joblib.load('models/maintenance_level_encoder.pkl')
+le_environment = joblib.load('models/environmental_conditions_encoder.pkl')
+le_cracks = joblib.load('models/cracks_detected_encoder.pkl')
+
 
 # --------------------- functions --------------------------------
 
@@ -55,9 +73,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
 def calculate_distance(lat1, lon1, lat2, lon2):
-    # Convert latitude and longitude from degrees to radians
     lat1, lon1, lat2, lon2 = map(radians, [float(lat1), float(lon1), float(lat2), float(lon2)])
-    
     # Haversine formula
     dlon = lon2 - lon1
     dlat = lat2 - lat1
@@ -101,7 +117,6 @@ def view_complaints():
 @app.route('/your_complaint_status')
 @login_required
 def your_complaint_status():
-    # Get the current user's email from the session
     user_email = session.get('user')
     user = users_collection.find_one({"email": user_email})
     
@@ -126,6 +141,26 @@ def your_complaint_status():
         resolved_count=resolved_count,
         pending_count=pending_count
     )
+
+@app.route('/predict-bridge', methods=['GET', 'POST'])
+def predict_bridge():
+    prediction = None
+    if request.method == 'POST':
+        age = int(request.form['age'])
+        material = le_material.transform([request.form['material']])[0]
+        span = float(request.form['span_length'])
+        traffic = int(request.form['traffic_load'])
+        maintenance = le_maintenance.transform([request.form['maintenance_level']])[0]
+        environment = le_environment.transform([request.form['environmental_conditions']])[0]
+        cracks = le_cracks.transform([request.form['cracks_detected']])[0]
+        corrosion = int(request.form['corrosion_level'])
+
+        features = np.array([[age, material, span, traffic, maintenance, environment, cracks, corrosion]])
+        scaled = scaler.transform(features)
+        predicted = model1.predict(scaled)[0]
+        prediction = f"{predicted:.2f} years"
+
+    return render_template("predict_bridge.html", prediction=prediction)
 
 @app.route('/upvote/<complaint_id>', methods=['POST'])
 @login_required
@@ -263,8 +298,8 @@ def submit_complaint():
     pothole_count = 0
     normalized_area = 0
     
-    # Check for duplicate complaints within 5 meters
-    threshold_distance = 5  # 5 meters
+    # Check for nearby existing complaints (threshold 5 meters)
+    threshold_distance = 5
     existing_complaints = list(complaints_collection.find())
     
     for complaint in existing_complaints:
@@ -272,73 +307,109 @@ def submit_complaint():
             existing_lat = complaint['latitude']
             existing_lng = complaint['longitude']
             
-            # Calculate distance between current complaint and existing complaint
-            distance = calculate_distance(latitude, longitude, existing_lat, existing_lng)
-            
+            distance = calculate_distance(float(latitude), float(longitude), float(existing_lat), float(existing_lng))
             if distance <= threshold_distance:
-                # Duplicate complaint found within threshold distance
-                return render_template('file_complaint.html', error="Invalid submission, same complaint is already uploaded, check community please")
+                return render_template('file_complaint.html', 
+                    error="Invalid submission, same complaint is already uploaded, check community please")
     
+    # Process image if one was uploaded
     if image and image.filename != '' and allowed_file(image.filename):
         try:
-            upload_folder=os.path.join(app.root_path, app.config['UPLOAD_FOLDER'])
-            os.makedirs(upload_folder,exist_ok=True)
-            unique_filename=f"{uuid.uuid4()}_{secure_filename(image.filename)}"
-            filepath=os.path.join(upload_folder, unique_filename)
+            # Save image to upload folder
+            upload_folder = os.path.join(app.root_path, app.config['UPLOAD_FOLDER'])
+            os.makedirs(upload_folder, exist_ok=True)
+            unique_filename = f"{uuid.uuid4()}_{secure_filename(image.filename)}"
+            filepath = os.path.join(upload_folder, unique_filename)
             image.save(filepath)
             
             image_filename = f"images/{unique_filename}"
             print(f"Image saved to: {filepath}")
+            
+            # Get model predictions
             result = model.predict(filepath).json()
-            predictions = result["predictions"]
+            predictions = result.get("predictions", [])
+            
+            # Handle case when no predictions are returned
+            if not predictions:
+                return render_template('file_complaint.html', 
+                    error="No potholes detected in the image. Please submit a clearer image of the pothole.")
+            
+            # Set minimum confidence threshold to avoid false positives
+            min_confidence = 0.5
             xyxy = []
             confidences = []
             class_ids = []
-
+            
             for pred in predictions:
-                x, y, w, h = pred["x"], pred["y"], pred["width"], pred["height"]
-                x1 = x - w / 2
-                y1 = y - h / 2
-                x2 = x + w / 2
-                y2 = y + h / 2
-                xyxy.append([x1, y1, x2, y2])
-                confidences.append(pred["confidence"])
-                class_ids.append(0) 
-                # Assuming all are potholes (class 0)
-
-            if xyxy:  
+                if pred.get("confidence", 0) >= min_confidence and pred.get("class") == "pothole":
+                    x, y, w, h = pred["x"], pred["y"], pred["width"], pred["height"]
+                    x1 = x - w / 2
+                    y1 = y - h / 2
+                    x2 = x + w / 2
+                    y2 = y + h / 2
+                    xyxy.append([x1, y1, x2, y2])
+                    confidences.append(pred["confidence"])
+                    class_ids.append(0)  # class 0 for potholes
+            
+            # If no valid pothole detections above threshold
+            if not xyxy:
+                return render_template('file_complaint.html', 
+                    error="No valid pothole detections in the image. Please submit a clearer image.")
+            
+            # Convert to NumPy arrays and process detections
+            try:
                 xyxy = np.array(xyxy)
                 confidences = np.array(confidences)
                 class_ids = np.array(class_ids)
-
+                
+                if xyxy.shape[1] != 4:
+                    return render_template('file_complaint.html', 
+                        error="Error processing image. Please try a different image.")
+                
                 detections = sv.Detections(xyxy=xyxy, confidence=confidences, class_id=class_ids)
                 potholes = detections[detections.class_id == 0]
-
+                pothole_count = len(potholes)
+                
+                if pothole_count == 0:
+                    return render_template('file_complaint.html', 
+                        error="No potholes confirmed by our system. Please submit a clearer image.")
+                
+                # Calculate areas and normalize
                 bounding_boxes = potholes.xyxy
                 areas = (bounding_boxes[:, 2] - bounding_boxes[:, 0]) * (bounding_boxes[:, 3] - bounding_boxes[:, 1])
                 total_area = float(np.sum(areas))
-                pothole_count = len(potholes)
-
+                
                 img = cv2.imread(filepath)
                 image_height, image_width = img.shape[:2]
                 image_area = image_height * image_width
                 normalized_area = total_area / image_area
                 
+                # If potholes detected, mark as validated
                 if pothole_count > 0:
                     validated_by_model = 1
-            
+                
+            except Exception as e:
+                print(f"Error processing detections: {e}")
+                return render_template('file_complaint.html', 
+                    error="Error processing image. Please try a different image.")
+                
         except Exception as e:
             print(f"Error processing image: {e}")
+            return render_template('file_complaint.html', 
+                error="Error processing image. Please try again.")
     else:
         print("No valid image uploaded or image format not allowed")
     
+    # If image was uploaded but not validated, reject submission
     if image and image.filename != '' and validated_by_model == 0:
-        return redirect(url_for('home'))
+        return render_template('file_complaint.html', 
+            error="We couldn't validate any potholes in your image. Please submit a clearer photo.")
     
-    # Note: Default values for pothole_count and normalized_area are 0
-    priority=10*pothole_count+3*normalized_area
+    # Calculate priority based on pothole count and normalized area
+    priority = 10 * pothole_count + 3 * normalized_area
     
-    complaint={
+    # Create complaint object
+    complaint = {
         'user_email': session['user'],
         'image': image_filename,  
         'description': description,
@@ -359,9 +430,14 @@ def submit_complaint():
         'submission_date': datetime.now()
     }
     
-    complaints_collection.insert_one(complaint)
-    print("Complaint Added:", complaint)
-    return redirect(url_for('home'))
+    # Only insert into database if there are potholes detected
+    if pothole_count > 0:
+        complaints_collection.insert_one(complaint)
+        print("Complaint Added:", complaint)
+        return redirect(url_for('home'))
+    else:
+        return render_template('file_complaint.html', 
+            error="Invalid submission: No potholes detected in the image.")
 
 @app.route('/register', methods=['GET','POST'])
 def register():
