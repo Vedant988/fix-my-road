@@ -1,60 +1,11 @@
-<!-- file_complaint.html -->
-<!DOCTYPE html>
+<!-- file_complaint.html which is "working" in FLASK BACKEND  -->
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>File Complaint</title>
-    <style>
-        form input,
-        form textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 12px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-        }
-
-        form button {
-            padding: 12px 24px;
-            font-size: 16px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        form button:hover {
-            background-color: #2980b9;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 12px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .back-btn {
-            display: inline-block;
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .back-btn button {
-            background-color: #777;
-        }
-    </style>
 </head>
 
 <body>
@@ -86,4 +37,621 @@
     </div>
 </body>
 
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Complaint</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+    <style>
+        :root {
+            --primary-color: #854836;    
+            --secondary-color: #FFB22C; 
+            --accent-color: #000000;     
+            --light-color: #F7F7F7;      
+            --dark-color: #000000;       
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+        
+        /* Navbar styles */
+        .navmenu {
+            background-color: var(--light-color);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 10px 0;
+        }
+
+        .navmenu ul {
+            display: flex;
+            list-style: none;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+        }
+
+        .navmenu a {
+            color: var(--primary-color);
+            padding: 10px 15px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .navmenu a:hover {
+            color: var(--secondary-color);
+        }
+        
+        .navmenu a.active {
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        /* Form container */
+        .container {
+            max-width: 800px;
+            margin: 5rem auto 2rem;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .form-title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        /* Form styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+        }
+        
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        /* Image upload */
+        .image-upload {
+            border: 2px dashed #ccc;
+            border-radius: 4px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .image-instructions {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .image-preview {
+            max-width: 100%;
+            max-height: 300px;
+            margin-top: 1rem;
+            display: none;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        
+        /* Location button */
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+        }
+        
+        .btn-current-location {
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+            margin-top: 0.5rem;
+        }
+        
+        .btn-current-location:hover {
+            background-color: #e6a020;
+        }
+        
+        /* Map container */
+        .map-container {
+            height: 400px;
+            width: 100%;
+            background-color: #eee;
+            margin-top: 1rem;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        /* Submit button */
+        .btn-submit {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-submit:hover {
+            background-color: #6d3a2d;
+        }
+        
+        /* Location confirmation controls */
+        .location-controls {
+            margin-top: 1rem;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .confirm-btn {
+            background-color: #4CAF50;
+        }
+        
+        .confirm-btn:hover {
+            background-color: #3e8e41;
+        }
+        
+        .cancel-btn {
+            background-color: #f44336;
+        }
+        
+        .cancel-btn:hover {
+            background-color: #d32f2f;
+        }
+        
+        /* Contact field */
+        .contact-field {
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Back button */
+        .back-btn {
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+        
+        .back-btn button {
+            background-color: #666;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .back-btn button:hover {
+            background-color: #444;
+        }
+        
+        .copyright {
+            background: #ffffff;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--dark-color);
+        }
+
+        .copyright a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .copyright a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+                margin: 4rem 1rem 1rem;
+            }
+            
+            .navmenu ul {
+                flex-wrap: wrap;
+            }
+            
+            .navmenu a {
+                padding: 8px 10px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navmenu">
+        <ul>
+            <li><a href="{{ url_for('home') }}">🏠 Dashboard</a></li>
+            <li><a href="#" class="active">📝 File Complaint</a></li>
+            <li><a href="#">📊 View Complaints</a></li>
+            <li><a href="#">📞 Support</a></li>
+        </ul>
+    </nav>
+    
+    <!-- Form container -->
+    <div class="container">
+        <h1 class="form-title">File a Pothole Complaint</h1>
+        
+        <form id="reportForm" method="POST" action="/submit_complaint" enctype="multipart/form-data">
+            <!-- Image upload -->
+            <div class="form-group">
+                <label class="form-label">Upload Pothole Image</label>
+                <div class="image-upload">
+                    <div class="image-instructions">
+                        <p>1. Take a clear photo of the pothole from multiple angles if possible</p>
+                        <p>2. Ensure the photo shows the full extent of the problem</p>
+                        <p>3. Avoid blurry or dark photos for better identification</p>
+                    </div>
+                    <input type="file" name="image" id="image" class="form-control" accept="image/*" required>
+                    <img id="imagePreview" class="image-preview" alt="Image preview">
+                </div>
+            </div>
+            
+            <!-- Description -->
+            <div class="form-group">
+                <label for="description" class="form-label">Description</label>
+                <textarea name="description" id="description" class="form-control" placeholder="Please describe the pothole issue in detail..." required></textarea>
+            </div>
+            
+            <!-- Contact Number -->
+            <div class="form-group">
+                <label for="contact" class="form-label">Contact Number</label>
+                <input type="text" name="contact" id="contact" class="form-control" placeholder="Enter your contact number" required>
+            </div>
+            
+            <!-- Map location -->
+            <div class="form-group">
+                <label class="form-label">Map Location</label>
+                <div class="location-fields">
+                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <input type="text" name="latitude" id="latitude" class="form-control" placeholder="Latitude" readonly required>
+                        <input type="text" name="longitude" id="longitude" class="form-control" placeholder="Longitude" readonly required>
+                    </div>
+                </div>
+                <button type="button" id="currentLocationBtn" class="btn btn-current-location">Get Current Location</button>
+                <div class="map-container" id="map">
+                    <!-- Map will be rendered here -->
+                </div>
+                <div id="locationControls" class="location-controls" style="display: none;">
+                    <button type="button" id="confirmLocationBtn" class="btn confirm-btn">Confirm This Location</button>
+                    <button type="button" id="cancelLocationBtn" class="btn cancel-btn">Cancel</button>
+                </div>
+            </div>
+            
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-submit">Submit Complaint</button>
+        </form>
+        
+        <div class="back-btn">
+            <a href="{{ url_for('home') }}"><button>Back to Home</button></a>
+        </div>
+    </div>
+    
+    <div class="copyright">
+        <p>&copy; 2025 Nagpur Municipal Corporation. All Rights Reserved.</p>
+        <p>Designed &amp; Developed by <a href="#" target="_blank">Nagpur Municipal Corporation</a></p>
+    </div>
+    
+    <!-- Add Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Global variables for map and marker
+        let map;
+        let marker;
+        let accuracyCircle;
+        let imageDataUrl = null;
+        let isSelectingLocation = false;
+        let locationConfirmed = false;
+        
+        // Image preview functionality
+        document.getElementById('image').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const preview = document.getElementById('imagePreview');
+                    preview.src = event.target.result;
+                    preview.style.display = 'block';
+                    imageDataUrl = event.target.result;
+                    
+                    // Update marker popup if it exists
+                    if (marker) {
+                        updateMarkerPopup();
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Function to update marker popup with image
+        function updateMarkerPopup() {
+            let popupContent = "Complaint Location";
+            if (imageDataUrl) {
+                popupContent += `<br><img src="${imageDataUrl}" alt="Issue" style="width:100px;height:auto;border-radius:8px;margin-top:5px;">`;
+            }
+            if (marker) {
+                marker.bindPopup(popupContent).openPopup();
+            }
+        }
+        
+        // Function to handle location
+        function gotLocation(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            const accuracy = position.coords.accuracy;
+
+            console.log(`Latitude: ${latitude}, Longitude: ${longitude}, Accuracy: ${accuracy}m`);
+            document.getElementById('latitude').value = latitude.toFixed(6);
+            document.getElementById('longitude').value = longitude.toFixed(6);
+
+            // Define tile layers
+            const streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+            });
+
+            const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles © Esri'
+            });
+
+            // If map doesn't exist, initialize it
+            if (!map) {
+                map = L.map('map', {
+                    center: [latitude, longitude],
+                    zoom: 16,  // Higher zoom level for better accuracy
+                    layers: [streetLayer]
+                });
+
+                const baseMaps = {
+                    "Street View": streetLayer,
+                    "Satellite View": satelliteLayer
+                };
+
+                L.control.layers(baseMaps).addTo(map);
+                
+                // Add scale control
+                L.control.scale().addTo(map);
+            }
+
+            // Remove existing marker and circle if any
+            if (marker) {
+                map.removeLayer(marker);
+            }
+            if (accuracyCircle) {
+                map.removeLayer(accuracyCircle);
+            }
+
+            // Add accuracy circle
+            accuracyCircle = L.circle([latitude, longitude], {
+                color: '#136AEC',
+                fillColor: '#136AEC',
+                fillOpacity: 0.15,
+                radius: accuracy
+            }).addTo(map);
+
+            // Create a popup with image if available
+            let popupContent = "Your current location<br>(Click anywhere on map to select different location)";
+            if (imageDataUrl) {
+                popupContent += `<br><img src="${imageDataUrl}" alt="Issue" style="width:100px;height:auto;border-radius:8px;margin-top:5px;">`;
+            }
+
+            // Add marker for current location
+            marker = L.marker([latitude, longitude], {
+                draggable: true
+            }).addTo(map)
+                .bindPopup(popupContent)
+                .openPopup();
+
+            // Center the map
+            map.setView([latitude, longitude], 16);
+            
+            // Enable location selection mode
+            enableLocationSelection();
+            
+            // Update marker position when dragged
+            marker.on('dragend', function(e) {
+                const newPos = marker.getLatLng();
+                document.getElementById('latitude').value = newPos.lat.toFixed(6);
+                document.getElementById('longitude').value = newPos.lng.toFixed(6);
+                if (accuracyCircle) {
+                    map.removeLayer(accuracyCircle);
+                    accuracyCircle = null;
+                }
+            });
+        }
+        
+        // Enable location selection mode
+        function enableLocationSelection() {
+            isSelectingLocation = true;
+            document.getElementById('locationControls').style.display = 'flex';
+            locationConfirmed = false;
+            
+            // Handle map clicks to set location
+            map.on('click', function(e) {
+                if (!isSelectingLocation) return;
+                
+                const clickedLatLng = e.latlng;
+                document.getElementById('latitude').value = clickedLatLng.lat.toFixed(6);
+                document.getElementById('longitude').value = clickedLatLng.lng.toFixed(6);
+                
+                // Move marker to clicked location
+                if (marker) {
+                    marker.setLatLng(clickedLatLng);
+                } else {
+                    marker = L.marker(clickedLatLng, {
+                        draggable: true
+                    }).addTo(map)
+                        .bindPopup("Selected location")
+                        .openPopup();
+                    
+                    // Update marker position when dragged
+                    marker.on('dragend', function(e) {
+                        const newPos = marker.getLatLng();
+                        document.getElementById('latitude').value = newPos.lat.toFixed(6);
+                        document.getElementById('longitude').value = newPos.lng.toFixed(6);
+                    });
+                }
+                
+                // Remove accuracy circle if it exists
+                if (accuracyCircle) {
+                    map.removeLayer(accuracyCircle);
+                    accuracyCircle = null;
+                }
+            });
+        }
+        
+        // Disable location selection mode
+        function disableLocationSelection() {
+            isSelectingLocation = false;
+            document.getElementById('locationControls').style.display = 'none';
+            map.off('click');
+        }
+        
+        // Current location button
+        document.getElementById('currentLocationBtn').addEventListener('click', function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    gotLocation,
+                    function(error) {
+                        alert('Error getting location: ' + error.message);
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+                );
+            } else {
+                alert('Geolocation is not supported by your browser.');
+            }
+        });
+        
+        // Confirm location button
+        document.getElementById('confirmLocationBtn').addEventListener('click', function() {
+            disableLocationSelection();
+            if (accuracyCircle) {
+                map.removeLayer(accuracyCircle);
+                accuracyCircle = null;
+            }
+            locationConfirmed = true;
+            alert('Location confirmed!');
+        });
+        
+        // Cancel location button
+        document.getElementById('cancelLocationBtn').addEventListener('click', function() {
+            disableLocationSelection();
+            if (marker) {
+                map.removeLayer(marker);
+                marker = null;
+            }
+            if (accuracyCircle) {
+                map.removeLayer(accuracyCircle);
+                accuracyCircle = null;
+            }
+            document.getElementById('latitude').value = '';
+            document.getElementById('longitude').value = '';
+            locationConfirmed = false;
+        });
+        
+        // Form submission validation
+        document.getElementById('reportForm').addEventListener('submit', function(e) {
+            if (!marker || !locationConfirmed) {
+                e.preventDefault();
+                alert('Please select and confirm a location on the map first!');
+                return;
+            }
+            
+            const latitude = document.getElementById('latitude').value;
+            const longitude = document.getElementById('longitude').value;
+            
+            if (!latitude || !longitude) {
+                e.preventDefault();
+                alert('Please select a location on the map!');
+                return;
+            }
+        });
+        
+        // Initialize map with Nagpur's location (21.1458° N, 79.0882° E)
+        window.addEventListener('load', function() {
+            // Nagpur coordinates
+            const nagpurLat = 21.1458;
+            const nagpurLng = 79.0882;
+            
+            // Initialize map with street view
+            const streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            });
+            
+            const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles © Esri'
+            });
+            
+            map = L.map('map', {
+                center: [nagpurLat, nagpurLng],
+                zoom: 12,
+                layers: [streetLayer]
+            });
+            
+            // Add layer control
+            const baseMaps = {
+                "Street View": streetLayer,
+                "Satellite View": satelliteLayer
+            };
+            
+            L.control.layers(baseMaps).addTo(map);
+            
+            // Add scale control
+            L.control.scale().addTo(map);
+        });
+    </script>
+</body>
 </html>

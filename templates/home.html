@@ -117,7 +117,7 @@
     <section id="hero" class="hero section dark-background">
       <div class="slider-container">
         <div class="slide active opacity-100 z-10" 
-             style="background-image: url('https://static.wixstatic.com/media/f8cafb_0c967d0a0ebb49b18645aacf6fcca2ee~mv2.jpg');">
+             style="background-image: url('https://static.theprint.in/wp-content/uploads/2018/12/Potholes.jpg');">
           <div class="slide-content">
             {% if user %}
             <div class="row justify-content-center text-center" data-aos="fade-up" data-aos-delay="100" 
@@ -128,7 +128,7 @@
             </div>
             {% endif %}
             <div class="row justify-content-center text-center" data-aos="fade-up" data-aos-delay="100" style="font-family: 'Special Gothic Expanded One '; font-size: 32px;">
-                <h2><span>Click. &nbsp; Share. &nbsp;  Repair.&nbsp;<span></span></h2>  
+                <h2><span>Report. &nbsp; Raise. &nbsp;   Repair.&nbsp;<span></span></h2>  
             </div>
           </div>
         </div>
@@ -136,10 +136,10 @@
       
         <!-- Slide 2 -->
         <div class="slide opacity-0 z-0" 
-     style="background-image: url('https://static.wixstatic.com/media/f8cafb_c511ab39a92e4c5c8cf5b30e77ec6818~mv2.jpg');">
+     style="background-image: url('https://images.deccanherald.com/deccanherald%2Fimport%2Fsites%2Fdh%2Ffiles%2Farticleimages%2F2022%2F08%2F22%2Fpothole-1138292-1661174905.jpg?auto=format%2Ccompress&fmt=webp&fit=max&format=webp&q=70&w=400&dpr=2');">
   <div class="slide-content">
     <div class="row justify-content-center text-center" data-aos="fade-up" data-aos-delay="100">
-      <h2><span>Real-time transit updates,and nearby rentals at your fingertips!</span></h2>
+      <h2><span>Make Every Bump Count — Report Potholes and Protect Your Community.</span></h2>
     </div>
   </div>
 </div>
@@ -151,31 +151,39 @@
     <div class="row gy-4 justify-content-center" data-aos="fade-up" data-aos-delay="200">
 
       <div class="col-xl-2 col-md-4" data-aos="fade-up" data-aos-delay="300">
+        <a href="{{ url_for('file_complaint') }}">
         <div class="icon-box">
           <i class="bi bi-pencil-square"></i>
-          <h3><a href="">📝 File Complaint</a></h3>
+          <h3>File Complaint</h3>
         </div>
+        </a>
       </div>
 
       <div class="col-xl-2 col-md-4" data-aos="fade-up" data-aos-delay="400">
+        <a href="#">
         <div class="icon-box">
           <i class="bi bi-map"></i>
-          <h3><a href="">🗺️ View on Map</a></h3>
+          <h3><a>View on Map</a></h3>
         </div>
+        </a>
       </div>
 
       <div class="col-xl-2 col-md-4" data-aos="fade-up" data-aos-delay="500">
+        <a href="{{ url_for('view_complaints') }}">
         <div class="icon-box">
           <i class="bi bi-people-fill"></i>
-          <h3><a href="">👥 Community</a></h3>
+          <h3>Community</h3>
         </div>
+        </a>
       </div>
 
       <div class="col-xl-2 col-md-4" data-aos="fade-up" data-aos-delay="600">
+        <a href="{{ url_for('your_complaint_status') }}">
         <div class="icon-box">
           <i class="bi bi-check2-circle"></i>
-          <h3><a href="">📋 Complaint Status</a></h3>
+          <h3>Complaint Status</h3>
         </div>
+        </a>
       </div>
 
     </div>

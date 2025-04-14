@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile | Pothole Reporting</title>
+    <style>
+        /* Theme colors */
+        :root {
+            --primary-color: #854836;    /* Dark Brown */
+            --secondary-color: #FFB22C;  /* Yellow/Orange */
+            --accent-color: #000000;     /* Black */
+            --light-color: #F7F7F7;      /* Light Gray */
+            --dark-color: #000000;       /* Black */
+            --submit-color: #2196F3;     /* Blue */
+            --verified-color: #FFC107;   /* Amber */
+            --pending-color: #FF9800;    /* Orange */
+            --solved-color: #4CAF50;     /* Green */
+        }
+        
+        /* General styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+        
+        /* Navbar styles */
+        .navmenu {
+            background-color: var(--light-color);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 10px 0;
+        }
+
+        .navmenu ul {
+            display: flex;
+            list-style: none;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+        }
+
+        .navmenu a {
+            color: var(--primary-color);
+            padding: 10px 15px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .navmenu a:hover {
+            color: var(--secondary-color);
+        }
+        
+        .navmenu a.active {
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        /* Main container */
+        .main-container {
+            max-width: 1200px;
+            margin: 5rem auto 2rem;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+        
+        /* Profile section */
+        .profile-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 2rem;
+            height: fit-content;
+            position: sticky;
+            top: 5rem;
+        }
+        
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--secondary-color);
+            display: block;
+            margin: 0 auto 1.5rem;
+        }
+        
+        .profile-name {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        .profile-email {
+            text-align: center;
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            border-top: 1px solid #eee;
+            padding-top: 1.5rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        /* Complaints section */
+        .complaints-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+        
+        .complaints-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .complaint-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .complaint-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .complaint-content {
+            padding: 1.5rem;
+        }
+        
+        .complaint-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        .complaint-description {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .complaint-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .detail-item {
+            font-size: 0.85rem;
+        }
+        
+        .detail-label {
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+        
+        .detail-value {
+            color: #666;
+        }
+        
+        /* Status tracker */
+        .status-tracker {
+            margin-top: 1.5rem;
+        }
+        
+        .status-title {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        .status-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            height: 30px;
+        }
+        
+        .status-steps::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-color: #eee;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+        
+        .status-step {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            flex: 1;
+        }
+        
+        .status-bubble {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .status-label {
+            font-size: 0.7rem;
+            margin-top: 0.3rem;
+            color: #999;
+        }
+        
+        /* Status colors */
+        .status-submit .status-bubble {
+            background-color: var(--submit-color);
+        }
+        
+        .status-verified .status-bubble {
+            background-color: var(--verified-color);
+        }
+        
+        .status-pending .status-bubble {
+            background-color: var(--pending-color);
+        }
+        
+        .status-solved .status-bubble {
+            background-color: var(--solved-color);
+        }
+        
+        /* Active status */
+        .status-active .status-label {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        /* Progress bar */
+        .status-progress {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            height: 3px;
+            background-color: var(--secondary-color);
+            transform: translateY(-50%);
+            z-index: 1;
+            transition: width 0.3s ease;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 900px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-section {
+                position: static;
+            }
+        }
+        
+        @media (max-width: 500px) {
+            .complaints-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .navmenu ul {
+                flex-wrap: wrap;
+            }
+            
+            .navmenu a {
+                padding: 8px 10px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navmenu">
+        <ul>
+            <li><a href="#">🏠 Dashboard</a></li>
+            <li><a href="#" class="active">👤 Profile</a></li>
+            <li><a href="#">📝 New Report</a></li>
+            <li><a href="#">⚙ Settings</a></li>
+        </ul>
+    </nav>
+    
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile Image" class="profile-image">
+            <h1 class="profile-name">John Doe</h1>
+            <p class="profile-email">john.doe@example.com</p>
+            
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="total-reports">0</div>
+                    <div class="stat-label">Reports</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="solved-reports">0</div>
+                    <div class="stat-label">Solved</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="pending-reports">0</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Complaints Section -->
+        <div class="complaints-section">
+            <h2>Your Reports</h2>
+            
+            <div class="complaints-grid" id="complaints-container">
+                <!-- Complaint cards will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample complaint data
+        const complaints = [
+            {
+                id: 1,
+                title: "Large Pothole on Main Road",
+                description: "Deep pothole near the intersection causing traffic issues and vehicle damage.",
+                imageUrl: "https://cdn.shopify.com/s/files/1/0274/7288/7913/files/MicrosoftTeams-image_32.jpg?v=1705315718",
+                ward: "Ward 5",
+                location: "Near City Park",
+                reportedDate: "15 Jan 2023",
+                statusDate: "22 Jan 2023",
+                status: "solved",
+                statusText: "Solved"
+            },
+            {
+                id: 2,
+                title: "Dangerous Pothole Near School",
+                description: "Deep pothole causing safety concerns for school children and parents.",
+                imageUrl: "https://cdn.fleetnews.co.uk/web-clean/2/aastock-images/pothole-istock-174662203-kozmoat98_w960.jpg",
+                ward: "Ward 2",
+                location: "Near ABC School",
+                reportedDate: "5 Feb 2023",
+                statusDate: "10 Feb 2023",
+                status: "pending",
+                statusText: "Pending"
+            },
+            {
+                id: 3,
+                title: "Multiple Potholes in Residential Area",
+                description: "Several potholes causing inconvenience to residents and visitors.",
+                imageUrl: "https://broomfield.org/ImageRepository/Document?documentId=42496",
+                ward: "Ward 7",
+                location: "Green Park Colony",
+                reportedDate: "20 Feb 2023",
+                statusDate: "22 Feb 2023",
+                status: "verified",
+                statusText: "Verified"
+            },
+            {
+                id: 4,
+                title: "Pothole Near Bus Stop",
+                description: "Pothole causing problems for buses and passengers boarding/alighting.",
+                imageUrl: "https://newsroom.aaa.com/wp-content/uploads/2022/03/Pothole-Twitter.png",
+                ward: "Ward 3",
+                location: "Central Bus Stop",
+                reportedDate: "28 Feb 2023",
+                statusDate: "Just Submitted",
+                status: "submitted",
+                statusText: "Submitted"
+            }
+        ];
+
+        // Function to create a complaint card
+        function createComplaintCard(complaint) {
+            // Determine progress based on status
+            let progressWidth = "0%";
+            let submitActive = "";
+            let verifiedActive = "";
+            let pendingActive = "";
+            let solvedActive = "";
+            let submitIcon = "1";
+            let verifiedIcon = "2";
+            let pendingIcon = "3";
+            let solvedIcon = "4";
+
+            switch(complaint.status) {
+                case "solved":
+                    progressWidth = "100%";
+                    submitActive = "status-active";
+                    verifiedActive = "status-active";
+                    pendingActive = "status-active";
+                    solvedActive = "status-active";
+                    submitIcon = "✓";
+                    verifiedIcon = "✓";
+                    pendingIcon = "✓";
+                    solvedIcon = "✓";
+                    break;
+                case "pending":
+                    progressWidth = "66%";
+                    submitActive = "status-active";
+                    verifiedActive = "status-active";
+                    pendingActive = "status-active";
+                    submitIcon = "✓";
+                    verifiedIcon = "✓";
+                    pendingIcon = "!";
+                    break;
+                case "verified":
+                    progressWidth = "33%";
+                    submitActive = "status-active";
+                    verifiedActive = "status-active";
+                    submitIcon = "✓";
+                    verifiedIcon = "✓";
+                    break;
+                case "submitted":
+                    progressWidth = "0%";
+                    submitActive = "status-active";
+                    submitIcon = "!";
+                    break;
+            }
+
+            // Determine which date to show based on status
+            let dateLabel = "Status Updated";
+            if (complaint.status === "solved") {
+                dateLabel = "Solved On";
+            } else if (complaint.status === "verified") {
+                dateLabel = "Verified On";
+            } else if (complaint.status === "submitted") {
+                dateLabel = "Status";
+            }
+
+            // Create the card HTML
+            const cardHTML = `
+                <div class="complaint-card" data-id="${complaint.id}">
+                    <img src="${complaint.imageUrl}" alt="Pothole" class="complaint-image">
+                    <div class="complaint-content">
+                        <h3 class="complaint-title">${complaint.title}</h3>
+                        <p class="complaint-description">${complaint.description}</p>
+                        
+                        <div class="complaint-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Ward Number</div>
+                                <div class="detail-value">${complaint.ward}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Location</div>
+                                <div class="detail-value">${complaint.location}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Reported On</div>
+                                <div class="detail-value">${complaint.reportedDate}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">${dateLabel}</div>
+                                <div class="detail-value">${complaint.statusDate}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="status-tracker">
+                            <div class="status-title">Complaint Status</div>
+                            <div class="status-steps">
+                                <div class="status-progress" style="width: ${progressWidth};"></div>
+                                <div class="status-step status-submit ${submitActive}">
+                                    <div class="status-bubble">${submitIcon}</div>
+                                    <div class="status-label">Submitted</div>
+                                </div>
+                                <div class="status-step status-verified ${verifiedActive}">
+                                    <div class="status-bubble">${verifiedIcon}</div>
+                                    <div class="status-label">Verified</div>
+                                </div>
+                                <div class="status-step status-pending ${pendingActive}">
+                                    <div class="status-bubble">${pendingIcon}</div>
+                                    <div class="status-label">Pending</div>
+                                </div>
+                                <div class="status-step status-solved ${solvedActive}">
+                                    <div class="status-bubble">${solvedIcon}</div>
+                                    <div class="status-label">Solved</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            return cardHTML;
+        }
+
+        // Function to update statistics
+        function updateStatistics() {
+            const total = complaints.length;
+            const solved = complaints.filter(c => c.status === "solved").length;
+            const pending = complaints.filter(c => c.status === "pending").length;
+
+            document.getElementById('total-reports').textContent = total;
+            document.getElementById('solved-reports').textContent = solved;
+            document.getElementById('pending-reports').textContent = pending;
+        }
+
+        // Function to render all complaint cards
+        function renderComplaints() {
+            const container = document.getElementById('complaints-container');
+            container.innerHTML = '';
+
+            complaints.forEach(complaint => {
+                const cardHTML = createComplaintCard(complaint);
+                container.insertAdjacentHTML('beforeend', cardHTML);
+            });
+
+            updateStatistics();
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', renderComplaints);
+
+        // In a real application, you would fetch this data from an API
+        // Example:
+        /*
+        async function fetchComplaints() {
+            try {
+                const response = await fetch('/api/complaints');
+                const data = await response.json();
+                complaints = data;
+                renderComplaints();
+            } catch (error) {
+                console.error('Error fetching complaints:', error);
+            }
+        }
+        fetchComplaints();
+        */
+    </script>
+</body>
+</html>

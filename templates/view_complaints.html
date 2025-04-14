@@ -1,5 +1,5 @@
-<!-- view_complaints.html -->
-<!DOCTYPE html>
+<!-- view_complaints.html old html file for correction of variables-->
+<!-- <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -124,4 +124,334 @@
             });
         </script>
     </body>
-    </html>
+</html>
+ -->
+
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Community Complaints - Twitter Style</title>
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+     <style>
+         body {
+             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+             background-color: #f7f7f7;
+             padding-top: 60px;
+         }
+         
+         .navbar-custom {
+             background-color: white;
+             box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+         }
+         
+         .twitter-card {
+             background-color: white;
+             border-radius: 12px;
+             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+             overflow: hidden;
+             border: 1px solid #e1e8ed;
+             margin-bottom: 20px;
+             transition: transform 0.3s ease;
+         }
+         
+         .twitter-card:hover {
+             transform: translateY(-5px);
+         }
+         
+         .twitter-header {
+             display: flex;
+             padding: 12px 16px;
+             align-items: center;
+         }
+         
+         .twitter-avatar {
+             width: 48px;
+             height: 48px;
+             border-radius: 50%;
+             margin-right: 12px;
+             background-color: #e1e8ed;
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             color: #657786;
+         }
+         
+         .twitter-name-container {
+             flex-grow: 1;
+         }
+         
+         .twitter-name {
+             font-weight: bold;
+             display: flex;
+             align-items: center;
+             margin-bottom: 2px;
+         }
+         
+         .twitter-username {
+             color: #657786;
+             font-size: 15px;
+         }
+         
+         .twitter-verified {
+             color: #1DA1F2;
+             margin-left: 5px;
+             font-size: 16px;
+         }
+         
+         .twitter-logo {
+             color: #1DA1F2;
+             font-size: 20px;
+         }
+         
+         .twitter-content {
+             padding: 0 16px;
+             margin-bottom: 12px;
+             line-height: 1.4;
+             font-size: 15px;
+         }
+         
+         .twitter-image {
+             width: 100%;
+             background-color: #f8f9fa;
+             max-height: 300px;
+             margin-top: 10px;
+             margin-bottom: 10px;
+             border: 1px solid #e1e8ed;
+             border-radius: 14px;
+             overflow: hidden;
+             object-fit: cover;
+         }
+         
+         .twitter-date {
+             padding: 12px 16px;
+             color: #657786;
+             font-size: 15px;
+             border-bottom: 1px solid #e1e8ed;
+         }
+         
+         .twitter-stats {
+             padding: 12px 16px;
+             display: flex;
+             color: #657786;
+             font-size: 15px;
+             border-bottom: 1px solid #e1e8ed;
+         }
+         
+         .twitter-stat {
+             margin-right: 20px;
+         }
+         
+         .twitter-actions {
+             display: flex;
+             justify-content: space-between;
+             padding: 8px 16px;
+         }
+         
+         .twitter-action {
+             color: #657786;
+             font-size: 18px;
+             padding: 8px;
+             cursor: pointer;
+             transition: all 0.2s;
+             display: flex;
+             align-items: center;
+         }
+         
+         .twitter-action:hover {
+             transform: scale(1.1);
+         }
+         
+         .twitter-action.active.upvote {
+             color: #1DA1F2;
+         }
+         
+         .twitter-action.active.downvote {
+             color: #EA4335;
+         }
+         
+         .priority-badge {
+             position: absolute;
+             top: 15px;
+             right: 15px;
+             z-index: 1;
+         }
+         
+         .vote-count {
+             margin-left: 5px;
+             font-size: 14px;
+         }
+     </style>
+ </head>
+ <body>
+     <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+         <div class="container">
+             <a class="navbar-brand fw-bold" href="#">Community Watch</a>
+             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                 <span class="navbar-toggler-icon"></span>
+             </button>
+             <div class="collapse navbar-collapse" id="navbarNav">
+                 <ul class="navbar-nav ms-auto">
+                     <li class="nav-item">
+                         <a class="nav-link active" href="#">
+                             <i class="fas fa-home me-1"></i> Home
+                         </a>
+                     </li>
+                     <li class="nav-item">
+                         <a class="nav-link" href="#">
+                             <i class="fas fa-plus-circle me-1"></i> New Complaint
+                         </a>
+                     </li>
+                 </ul>
+             </div>
+         </div>
+     </nav>
+ 
+     <div class="container mt-5">
+         <h1 class="mb-4 border-bottom pb-2">Community Complaints</h1>
+         
+         <div class="row g-4">
+             {% for complaint in complaints %}
+             <div class="col-lg-6">
+                 <div class="twitter-card position-relative">
+                     {% if complaint.priority >= 70 %}
+                     <span class="badge priority-badge bg-danger">High Priority</span>
+                     {% elif complaint.priority >= 40 %}
+                     <span class="badge priority-badge bg-warning">Medium Priority</span>
+                     {% else %}
+                     <span class="badge priority-badge bg-success">Low Priority</span>
+                     {% endif %}
+                     
+                     <div class="twitter-header">
+                         <div class="twitter-avatar">
+                             <i class="fas fa-user"></i>
+                         </div>
+                         <div class="twitter-name-container">
+                             <div class="twitter-name">
+                                 {{ complaint.title or ('Complaint #' + loop.index|string) }}
+                                 <i class="fas fa-check-circle twitter-verified"></i>
+                             </div>
+                             <div class="twitter-username">@community{{ loop.index }}</div>
+                         </div>
+                         <div class="twitter-logo">
+                             <i class="fas fa-bullhorn"></i>
+                         </div>
+                     </div>
+                     
+                     <div class="twitter-content">
+                         <p>{{ complaint.description }}</p>
+                         <img src="{{ url_for('static', filename=complaint.image) }}" 
+                              class="twitter-image" 
+                              alt="Complaint image">
+                     </div>
+                     
+                     <div class="twitter-date">
+                         {% if complaint.date_reported %}
+                             {% if complaint.date_reported is string %}
+                                 {{ complaint.date_reported }}
+                             {% else %}
+                                 {{ complaint.date_reported.strftime('%d %b %Y') }}
+                             {% endif %}
+                         {% else %}
+                             Unknown date
+                         {% endif %}
+                     </div>
+                     
+                     <div class="twitter-stats">
+                         <div class="twitter-stat"><strong>Status:</strong> {{ complaint.status|default('Pending') }}</div>
+                         <div class="twitter-stat">
+                             <strong>Location:</strong>
+                             {% if complaint.latitude and complaint.longitude %}
+                             <a href="https://maps.google.com?q={{ complaint.latitude }},{{ complaint.longitude }}"
+                                target="_blank" class="text-decoration-none">
+                                 View Map
+                             </a>
+                             {% else %}
+                             Not specified
+                             {% endif %}
+                         </div>
+                     </div>
+                     
+                     <div class="twitter-actions" data-complaint-id="{{ complaint._id }}">
+                         <a href="/complaint/{{ complaint._id }}" class="twitter-action">
+                             <i class="far fa-comment"></i>
+                             <span class="vote-count">{{ complaint.comments|default(0) }}</span>
+                         </a>
+                         <div class="twitter-action vote-btn upvote {% if complaint.user_vote == 'up' %}active{% endif %}" 
+                              data-action="upvote">
+                             <i class="fas fa-thumbs-up"></i>
+                             <span class="vote-count upvote-count">
+                                 {{ complaint.upvotes|default(0) }}
+                             </span>
+                         </div>
+                         <div class="twitter-action vote-btn downvote {% if complaint.user_vote == 'down' %}active{% endif %}" 
+                              data-action="downvote">
+                             <i class="fas fa-thumbs-down"></i>
+                             <span class="vote-count downvote-count">
+                                 {{ complaint.downvotes|default(0) }}
+                             </span>
+                         </div>
+                         <div class="twitter-action location-btn">
+                             <i class="fas fa-map-marker-alt"></i>
+                             {% if complaint.latitude and complaint.longitude %}
+                             <a href="https://maps.google.com?q={{ complaint.latitude }},{{ complaint.longitude }}"
+                                target="_blank" class="text-decoration-none vote-count">
+                                 Location
+                             </a>
+                             {% else %}
+                             <span class="vote-count">N/A</span>
+                             {% endif %}
+                         </div>
+                     </div>
+                 </div>
+             </div>
+             {% else %}
+             <div class="col-12">
+                 <div class="alert alert-info">
+                     No complaints found. Be the first to report one!
+                 </div>
+             </div>
+             {% endfor %}
+         </div>
+     </div>
+ 
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+     <script>
+     $(document).ready(function() {
+         $('.vote-btn').click(function() {
+             const $btn = $(this);
+             const $container = $btn.closest('.twitter-actions');
+             const complaintId = $container.data('complaint-id');
+             const action = $btn.data('action');
+             
+             $.ajax({
+                 url: `/${action}/${complaintId}`,
+                 method: 'POST',
+                 headers: {
+                     'X-Requested-With': 'XMLHttpRequest'
+                 },
+                 success: function(response) {
+                     // Update counts
+                     $container.find('.upvote-count').text(response.upvotes);
+                     $container.find('.downvote-count').text(response.downvotes);
+                     
+                     // Update active states
+                     $container.find('.vote-btn').removeClass('active');
+                     if (response.user_vote === 'up') {
+                         $container.find('.upvote').addClass('active');
+                     } else if (response.user_vote === 'down') {
+                         $container.find('.downvote').addClass('active');
+                     }
+                 },
+                 error: function() {
+                     alert('Error processing your vote. Please try again.');
+                 }
+             });
+         });
+     });
+     </script>
+ </body>
+ </html>
