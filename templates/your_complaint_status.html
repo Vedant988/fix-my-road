@@ -47,17 +47,18 @@
      <title>Your Reports</title>
      <style>
          * {
-             margin: 0;
-             padding: 0;
-             box-sizing: border-box;
-             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
          }
-         
+          
          body {
-             background-color: #f5f5f5;
-             padding: 20px;
+              background-color: #000000;
+              color: #fff;
+              padding: 20px;
          }
-         
+          
          .container {
              max-width: 1200px;
              margin: 0 auto;
@@ -67,12 +68,13 @@
          }
          
          .profile-card {
-             background-color: white;
+             background-color: #111111;
              border-radius: 10px;
              padding: 30px;
-             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+             box-shadow: 0 2px 10px rgba(255,204,0,0.2);
              text-align: center;
              height: fit-content;
+             border: 1px solid #333;
          }
          
          .profile-image {
@@ -80,19 +82,19 @@
              height: 150px;
              border-radius: 50%;
              margin: 0 auto 20px;
-             border: 4px solid #b8860b;
+             border: 4px solid #ffcc00;
              object-fit: cover;
              display: block;
          }
          
          .user-name {
-             color: #8B4513;
+             color: #ffcc00;
              font-size: 28px;
              margin-bottom: 5px;
          }
          
          .user-email {
-             color: #777;
+             color: #aaa;
              margin-bottom: 30px;
          }
          
@@ -110,11 +112,11 @@
          .stat-number {
              font-size: 32px;
              font-weight: bold;
-             color: #8B4513;
+             color: #ffcc00;
          }
          
          .stat-label {
-             color: #777;
+             color: #aaa;
              font-size: 14px;
          }
          
@@ -123,19 +125,19 @@
          }
          
          .content-title {
-             color: #8B4513;
+             color: #ffcc00;
              margin-bottom: 20px;
              font-size: 28px;
-             border-bottom: 3px solid #b8860b;
+             border-bottom: 3px solid #ffcc00;
              padding-bottom: 10px;
          }
          
          .section-header {
-             color: #8B4513;
+             color: #ffcc00;
              margin: 30px 0 15px;
              font-size: 20px;
              padding-bottom: 10px;
-             border-bottom: 1px solid #ddd;
+             border-bottom: 1px solid #333;
          }
          
          .section-header:first-of-type {
@@ -149,10 +151,11 @@
          }
          
          .complaint-card {
-             background-color: white;
+             background-color: #111111;
              border-radius: 10px;
              overflow: hidden;
-             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+             border: 1px solid #333;
          }
          
          .complaint-image {
@@ -168,6 +171,7 @@
          .complaint-description {
              margin-bottom: 15px;
              font-size: 16px;
+             color: #ffcc00;
          }
          
          .complaint-meta {
@@ -183,7 +187,7 @@
          
          .meta-label {
              font-weight: bold;
-             color: #777;
+             color: #aaa;
          }
          
          .complaint-status {
@@ -193,7 +197,7 @@
          
          .status-title {
              font-size: 16px;
-             color: #8B4513;
+             color: #ffcc00;
              margin-bottom: 10px;
          }
          
@@ -210,7 +214,7 @@
              content: '';
              position: absolute;
              height: 3px;
-             background-color: #ddd;
+             background-color: #333;
              top: 50%;
              transform: translateY(-50%);
              left: 0;
@@ -229,9 +233,9 @@
              transition: width 0.3s ease;
          }
          
-         /* Different progress line colors based on status */
+         /* Different progress line colors based on status - using more distinct colors */
          .status-progress-submitted {
-             background-color: #2196F3; /* Blue */
+             background-color: #1E88E5; /* Distinct blue */
              width: 33%;
          }
          
@@ -241,7 +245,7 @@
          }
          
          .status-progress-pending {
-             background-color: #FF9800; /* Orange */
+             background-color: #FF5722; /* Distinct orange */
              width: 99%;
          }
          
@@ -254,7 +258,7 @@
              width: 28px;
              height: 28px;
              border-radius: 50%;
-             background-color: #ddd;
+             background-color: #333;
              display: flex;
              align-items: center;
              justify-content: center;
@@ -264,25 +268,25 @@
              z-index: 2;
          }
          
-         /* Status circle styling */
+         /* Status circle styling with distinct colors */
          .status-step.completed {
-             background-color: #4CAF50;
+             background-color: #4CAF50; /* Green for completed */
          }
          
          .status-step.submitted.active {
-             background-color: #2196F3;
+             background-color: #1E88E5; /* Distinct blue */
          }
          
          .status-step.verified.active {
-             background-color: #FFC107;
+             background-color: #FFC107; /* Yellow */
          }
          
          .status-step.pending.active {
-             background-color: #FF9800;
+             background-color: #FF5722; /* Distinct orange */
          }
          
          .status-step.solved.active {
-             background-color: #4CAF50;
+             background-color: #4CAF50; /* Green */
          }
          
          /* Add checkmark icon to completed steps */
@@ -310,14 +314,74 @@
          
          .status-label.active {
              font-weight: bold;
-             color: #333;
+             color: #fff;
          }
          
          .no-complaints {
-             background-color: white;
+             background-color: #111111;
              padding: 20px;
              border-radius: 10px;
              text-align: center;
+             border: 1px solid #333;
+         }
+         
+         /* Header styling similar to homepage */
+         .header {
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             padding: 15px 0;
+             margin-bottom: 30px;
+         }
+         
+         .logo {
+             color: #fff;
+             font-size: 32px;
+             font-weight: bold;
+         }
+         
+         .logo span {
+             color: #ffcc00;
+         }
+         
+         .nav-menu {
+             display: flex;
+             gap: 30px;
+         }
+         
+         .nav-item {
+             color: #fff;
+             text-decoration: none;
+             font-size: 16px;
+             font-weight: 500;
+             padding: 10px 0;
+         }
+         
+         .nav-item.active {
+             color: #ffcc00;
+             border-bottom: 3px solid #ffcc00;
+         }
+         
+         .auth-buttons {
+             display: flex;
+             gap: 15px;
+         }
+         
+         .btn {
+             padding: 10px 20px;
+             border-radius: 5px;
+             border: 1px solid #ffcc00;
+             background-color: transparent;
+             color: #ffcc00;
+             cursor: pointer;
+             font-size: 14px;
+             font-weight: 500;
+             transition: all 0.3s ease;
+         }
+         
+         .btn:hover {
+             background-color: #ffcc00;
+             color: #000;
          }
          
          @media (max-width: 768px) {
@@ -328,14 +392,38 @@
              .complaints-grid {
                  grid-template-columns: 1fr;
              }
+             
+             .header {
+                 flex-direction: column;
+                 gap: 15px;
+             }
+             
+             .nav-menu {
+                 flex-wrap: wrap;
+                 justify-content: center;
+             }
          }
      </style>
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
  </head>
  <body>
+     <!-- Header similar to homepage -->
+     <div class="header container">
+         <div class="logo">fix<span>myroad</span>™</div>
+         <div class="nav-menu">
+             <a href="#" class="nav-item">Home</a>
+             <a href="#" class="nav-item">About Us</a>
+             <a href="#" class="nav-item">Projects</a>
+             <a href="#" class="nav-item">Support & Help</a>
+         </div>
+         <div class="auth-buttons">
+             <button class="btn">Back</button>
+         </div>
+     </div>
+ 
      <div class="container">
          <div class="profile-card">
-             <img src="{{ url_for('static', filename='images/default-avatar.png') }}" alt="Profile Picture" class="profile-image">
+             <img src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg" alt="Profile Picture" class="profile-image">
              <h2 class="user-name">{{ user['first_name'] }} {{ user['last_name'] }}</h2>
              <p class="user-email">{{ user['email'] }}</p>
              
@@ -346,7 +434,7 @@
                  </div>
                  <div class="stat">
                      <div class="stat-number">{{ resolved_count }}</div>
-                     <div class="stat-label">Re-Solved</div>
+                     <div class="stat-label">Resolved</div>
                  </div>
                  <div class="stat">
                      <div class="stat-number">{{ pending_count }}</div>

@@ -1,4 +1,4 @@
-# app.py
+# Required Libraries
 import uuid 
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from pymongo import MongoClient
@@ -14,6 +14,9 @@ import supervision as sv
 from roboflow import Roboflow
 import numpy as np
 from datetime import datetime
+from flask import flash
+from math import radians, sin, cos, sqrt, atan2
+
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -34,9 +37,9 @@ complaints_collection = db['complaints']
 app.config['UPLOAD_FOLDER'] = 'static/images'
 app.config['ALLOWED_EXTENSIONS'] = {'jpg', 'jpeg', 'png', 'gif', 'webp','avif'}
 
-
-
 complaints=[]
+
+# --------------------- functions --------------------------------
 
 def login_required(f):
     from functools import wraps
@@ -50,6 +53,22 @@ def login_required(f):
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
+def calculate_distance(lat1, lon1, lat2, lon2):
+    # Convert latitude and longitude from degrees to radians
+    lat1, lon1, lat2, lon2 = map(radians, [float(lat1), float(lon1), float(lat2), float(lon2)])
+    
+    # Haversine formula
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+    c = 2 * atan2(sqrt(a), sqrt(1-a))
+    radius = 6371000 
+    distance = radius * c
+    return distance 
+
+
+# --------------------- Endpoint Routing --------------------------------
 
 @app.route('/')
 def home():
@@ -78,12 +97,7 @@ def view_complaints():
     return render_template('view_complaints.html', complaints=all_complaints)
 
 
-# @app.route('/your_complaint_status', methods=['GET', 'POST'])
-# @login_required
-# def your_complaint_status():
-#     user_email = session['user']
-#     complaint_statuses = list(complaints_collection.find({'user_email': user_email}))
-#     return render_template('your_complaint_status.html', complaint_statuses=complaint_statuses)
+
 @app.route('/your_complaint_status')
 @login_required
 def your_complaint_status():
@@ -93,9 +107,7 @@ def your_complaint_status():
     
     if not user:
         return redirect(url_for('home'))
-    # Get active complaints for the current user
     active_complaints = list(complaints_collection.find({"user_email": user_email}))
-    # Get resolved complaints for the current user
     resolved_complaints = list(resolved_complaints_collection.find({"user_email": user_email}))
     
     complaints_count = len(active_complaints) + len(resolved_complaints)
@@ -238,48 +250,6 @@ def downvote_complaint(complaint_id):
     else:
         return redirect(url_for('view_complaints'))
 
-# @app.route('/submit_complaint', methods=['POST'])
-# @login_required
-# def submit_complaint():
-#     image = request.files.get('image')
-#     description = request.form.get('description')
-#     contact = request.form.get('contact')
-#     latitude = request.form.get('latitude')
-#     longitude = request.form.get('longitude')
-#     image_filename = "no_image.jpg"
-    
-#     if image and image.filename != '' and allowed_file(image.filename):
-#         try:
-#             upload_folder = os.path.join(app.root_path, app.config['UPLOAD_FOLDER'])
-#             os.makedirs(upload_folder, exist_ok=True)
-#             unique_filename = f"{uuid.uuid4()}_{secure_filename(image.filename)}"
-#             filepath = os.path.join(upload_folder, unique_filename)
-#             image.save(filepath)
-            
-#             image_filename = f"images/{unique_filename}"
-#             print(f"Image saved to: {filepath}")
-#         except Exception as e:
-#             print(f"Error saving image: {e}")
-#     else:
-#         print("No valid image uploaded or image format not allowed")
-#     complaint = {
-#         'user_email': session['user'],
-#         'image': image_filename,  
-#         'description': description,
-#         'contact': contact,
-#         'latitude': latitude,
-#         'longitude': longitude,
-#         'status': "Complaint Registered (Unverified)",
-#         'priority': random.randint(1, 100),
-#         'upvotes': 0,
-#         'downvotes': 0,  
-#         'upvoted_by': [],
-#         'downvoted_by': []  
-#     }
-#     complaints_collection.insert_one(complaint)
-#     print("Complaint Added:", complaint)
-#     return redirect(url_for('home'))
-
 @app.route('/submit_complaint', methods=['POST'])
 @login_required
 def submit_complaint():
@@ -292,6 +262,22 @@ def submit_complaint():
     validated_by_model = 0
     pothole_count = 0
     normalized_area = 0
+    
+    # Check for duplicate complaints within 5 meters
+    threshold_distance = 5  # 5 meters
+    existing_complaints = list(complaints_collection.find())
+    
+    for complaint in existing_complaints:
+        if 'latitude' in complaint and 'longitude' in complaint:
+            existing_lat = complaint['latitude']
+            existing_lng = complaint['longitude']
+            
+            # Calculate distance between current complaint and existing complaint
+            distance = calculate_distance(latitude, longitude, existing_lat, existing_lng)
+            
+            if distance <= threshold_distance:
+                # Duplicate complaint found within threshold distance
+                return render_template('file_complaint.html', error="Invalid submission, same complaint is already uploaded, check community please")
     
     if image and image.filename != '' and allowed_file(image.filename):
         try:
@@ -369,7 +355,7 @@ def submit_complaint():
         'pothole_count': pothole_count,
         'normalized_area': normalized_area,
         'complaint_approved_by_admin': False,
-        'complaint_resolved': False ,
+        'complaint_resolved': False,
         'submission_date': datetime.now()
     }
     
@@ -399,6 +385,40 @@ def register():
     return render_template('register.html')
 
 
+
+@app.route('/view_on_map')
+@login_required
+def view_on_map():
+    # Get only complaints that are verified by ML
+    verified_complaints = list(complaints_collection.find({"validated_by_model": 1}))
+    
+    # Format complaints for JavaScript consumption
+    map_complaints = []
+    for complaint in verified_complaints:
+        # Calculate severity level based on priority
+        priority = complaint.get('priority', 0)
+        if priority > 100:
+            severity = "severe"
+        elif priority > 50:
+            severity = "medium"
+        else:
+            severity = "low"
+            
+        map_complaints.append({
+            'id': str(complaint['_id']),
+            'latitude': complaint.get('latitude'),
+            'longitude': complaint.get('longitude'),
+            'description': complaint.get('description', ''),
+            'image': complaint.get('image', ''),
+            'pothole_count': complaint.get('pothole_count', 0),
+            'severity': severity,
+            'submission_date': complaint.get('submission_date').strftime('%Y-%m-%d %H:%M') if complaint.get('submission_date') else 'Unknown',
+            'status': complaint.get('status', '')
+        })
+    
+    return render_template('view_on_map.html', complaints=json.dumps(map_complaints))
+
+
 @app.route('/admin/resolved')
 def admin_resolved():
     if not session.get('is_admin', False):
@@ -407,20 +427,6 @@ def admin_resolved():
     resolved = list(resolved_complaints_collection.find().sort("resolution_date", -1))
     
     return render_template('admin_resolved.html', resolved_complaints=resolved)
-
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     if request.method == 'POST':
-#         email = request.form['email']
-#         password = request.form['password']
-#         user = users_collection.find_one({'email': email})
-#         if user and bcrypt.check_password_hash(user['password'], password):
-#             session['user'] = email
-#             session['first_name'] = user.get('first_name', '')  
-#             return redirect(url_for('home'))
-#         else:
-#             return "Invalid credentials!"
-#     return render_template('login.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

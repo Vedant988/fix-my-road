@@ -230,7 +230,11 @@
             display: flex;
             gap: 10px;
         }
-        
+        .error-message {
+            color: #FF0000;
+            font-weight: bold;
+            font-size: 16px;
+        }
         .confirm-btn {
             background-color: #4CAF50;
         }
@@ -308,7 +312,7 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
+
     <nav class="navmenu">
         <ul>
             <li><a href="{{ url_for('home') }}">🏠 Dashboard</a></li>
@@ -323,7 +327,7 @@
         <h1 class="form-title">File a Pothole Complaint</h1>
         
         <form id="reportForm" method="POST" action="/submit_complaint" enctype="multipart/form-data">
-            <!-- Image upload -->
+            
             <div class="form-group">
                 <label class="form-label">Upload Pothole Image</label>
                 <div class="image-upload">
@@ -367,7 +371,11 @@
                     <button type="button" id="cancelLocationBtn" class="btn cancel-btn">Cancel</button>
                 </div>
             </div>
-            
+            {% if error %}
+            <div class="alert alert-danger" role="alert">
+                <span style="color: #FF0000; font-weight: bold;">{{ error }}</span>
+            </div>
+            {% endif %}
             <!-- Submit button -->
             <button type="submit" class="btn btn-submit">Submit Complaint</button>
         </form>

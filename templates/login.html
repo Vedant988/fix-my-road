@@ -1,13 +1,5 @@
-<!-- <h2>Login</h2>
-<form method="POST">
-    Email: <input type="email" name="email" required><br>
-    Password: <input type="password" name="password" required><br>
-    <button type="submit">Login</button>
-</form> -->
-
-
 <!-- login.html -->
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
@@ -370,5 +362,378 @@
         <p>&copy; 2025 fixmyroad™. All Rights Reserved.</p>
         <p>Designed &amp; Developed by <a href="#" target="_blank">fixmyroad™ Team</a></p>
     </div>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Citizen Login | fixmyroad™</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+     <!-- Favicons -->
+    <link href="static/images/favicon.jpg" rel="icon">
+    <link href="static/images/Budget & Smart Travel Favic0on.jpg" rel="apple-touch-icon">
+    <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="static/vendor/aos/aos.css" rel="stylesheet">
+    <link href="static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="static/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/header.css">
+    
+    <style>
+        :root {
+            --accent-color: #FFC107;
+            --default-color: #ffffff;
+            --heading-color: #ffffff;
+            --background-color: rgba(0, 0, 0, 0.95);
+            --contrast-color: #ffffff;
+            --nav-color: #ffffff;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            padding-top: 100px;
+            color: var(--default-color);
+        }
+
+        /* Remove the index-page class to ensure proper header styling */
+        .header {
+            background-color: var(--background-color) !important;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        .login_page {
+            background: url("/api/placeholder/1200/800") no-repeat center center;
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .overlay {
+            background: rgba(0, 0, 0, 0.7);
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            max-width: 480px;
+            width: 100%;
+        }
+
+        .login-box {
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(255, 193, 7, 0.2);
+            padding: 40px;
+            border: 1px solid rgba(255, 193, 7, 0.2);
+        }
+
+        .login-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-title h4 {
+            font-size: 24px;
+            color: #FFC107;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .login-title p {
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        .login-type {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 25px;
+        }
+
+        .login-type-option {
+            display: flex;
+            align-items: center;
+        }
+
+        .login-type-option input[type="radio"] {
+            margin-right: 8px;
+            accent-color: #FFC107;
+            width: 16px;
+            height: 16px;
+        }
+
+        .login-type-option label {
+            font-weight: 500;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+        }
+
+        .form-control:focus {
+            border-color: #FFC107;
+            outline: none;
+        }
+
+        .btn-login {
+            background-color: #FFC107;
+            color: #000;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .btn-login:hover {
+            background-color: #e0aa00;
+        }
+
+        .login-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .login-links a {
+            color: #FFC107;
+            text-decoration: none;
+        }
+
+        .login-links a:hover {
+            text-decoration: underline;
+        }
+
+        .tagline {
+            text-align: center;
+            margin: 60px 0 40px;
+        }
+
+        .tagline h2 {
+            font-size: 36px;
+            color: #FFC107;
+            margin-bottom: 10px;
+        }
+
+        .copyright {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            text-align: center;
+            color: #ccc;
+            border-top: 1px solid rgba(255, 193, 7, 0.2);
+        }
+
+        .copyright a {
+            color: #FFC107;
+            text-decoration: none;
+        }
+
+        .copyright a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .login-box {
+                padding: 30px;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .navmenu ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .tagline h2 {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-box {
+                padding: 20px;
+            }
+            
+            .login-title h4 {
+                font-size: 20px;
+            }
+
+            .login-type {
+                gap: 15px;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .tagline h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Remove the index-page div wrapper around the header -->
+    <header id="header" class="header d-flex align-items-center fixed-top">
+        <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+    
+          <a href="index.html" class="logo d-flex align-items-center me-auto me-lg-0">
+            <!-- Uncomment the line below if you also wish to use an image logo -->
+            <!-- <img src="static/images/logo.png" alt=""> -->
+            <h1 class="sitename" style="color: #ffffff;">𝐟𝐢𝐱𝐦𝐲𝐫𝐨𝐚𝐝™</h1>
+            <span>&nbsp;&nbsp;</span>
+          </a>
+    
+          <nav id="navmenu" class="navmenu">
+            <ul>
+              <li><a href="index.html">Home&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+              <li><a href="index.html#about">About Us&nbsp;&nbsp;</a></li>
+              <li><a href="index.html#portfolio">Projects&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+              <li><a href="index.html#contact">Support & Help&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+            </ul>
+            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+          </nav>
+          
+          {% if user %}
+            <div class="button-group">
+                <a class="btn-getstarted login-icon" href="#" title="Profile">
+                    <i class="bi bi-person"></i>
+                </a>
+                <a class="btn-getstarted login-icon" href="{{ url_for('logout') }}" title="Logout">
+                    <i class="bi bi-box-arrow-right"></i>
+                </a>
+            </div>
+          {% else %}
+            <div class="button-group">
+                <a class="btn-getstarted" href="{{ url_for('home') }}">Back</a>
+                <a class="btn-getstarted" href="{{ url_for('register') }}">Register</a>
+                
+            </div>
+          {% endif %}
+        </div>
+        
+        {% if user %}
+        <div class="text-animation-container">
+          <div><p class="animated-text line-1 anim-typewriter">
+            Welcome, <span style="font-size: larger;">{{ first_name }}</span></p>
+          </div>
+        </div>
+        {% endif %}
+    </header>
+
+    <div class="login_page">
+        <div class="overlay">
+            <div class="login-container">
+               
+                <div class="login-box">
+                    <form method="POST" action="{{ url_for('login') }}" novalidate>
+                        <div class="login-title">
+                            <h4>Citizen Login</h4>
+                            <p>Login with your registered email address</p>
+                        </div>
+
+                        <div class="login-type">
+                            <div class="login-type-option">
+                                <input type="radio" id="userType" name="loginType" value="user" checked>
+                                <label for="userType">Login as User</label>
+                            </div>
+                            <div class="login-type-option">
+                                <input type="radio" id="adminType" name="loginType" value="admin">
+                                <label for="adminType">Login as Administrator</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email <span style="color:#FFC107">*</span></label>
+                            <input type="email" id="email" name="email" class="form-control" 
+                                   placeholder="Enter your email" required 
+                                   pattern="[^@\s]+@[^@\s]+\.[^@\s]+" />
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password <span style="color:#FFC107">*</span></label>
+                            <input type="password" id="password" name="password" 
+                                   class="form-control" placeholder="Enter password" required 
+                                   minlength="6" />
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn-login">Login</button>
+                        </div>
+                        <div class="login-links">
+                            <a href="{{ url_for('register') }}"><span>Register Now</span></a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="copyright">
+        <p>&copy; 2025 fixmyroad™. All Rights Reserved.</p>
+        <p>Designed &amp; Developed by <a href="#" target="_blank">fixmyroad™ Team</a></p>
+    </div>
+
+    <!-- Add the necessary JavaScript for header functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile nav toggle
+            const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+            const body = document.querySelector('body');
+            
+            if (mobileNavToggle) {
+                mobileNavToggle.addEventListener('click', function(e) {
+                    body.classList.toggle('mobile-nav-active');
+                    this.classList.toggle('bi-list');
+                    this.classList.toggle('bi-x');
+                });
+            }
+            
+            // Scroll behavior for header
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 100) {
+                    body.classList.add('scrolled');
+                } else {
+                    body.classList.remove('scrolled');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
