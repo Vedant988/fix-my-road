@@ -73,14 +73,14 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
 def calculate_distance(lat1, lon1, lat2, lon2):
-    lat1, lon1, lat2, lon2 = map(radians, [float(lat1), float(lon1), float(lat2), float(lon2)])
+    lat1, lon1, lat2, lon2 = map(radians,[float(lat1), float(lon1), float(lat2), float(lon2)])
     # Haversine formula
-    dlon = lon2 - lon1
-    dlat = lat2 - lat1
-    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
-    c = 2 * atan2(sqrt(a), sqrt(1-a))
+    dlon = lon2-lon1
+    dlat = lat2-lat1
+    a = sin(dlat/2)**2+cos(lat1)*cos(lat2)*sin(dlon/2)**2
+    c = 2*atan2(sqrt(a),sqrt(1-a))
     radius = 6371000 
-    distance = radius * c
+    distance = radius*c
     return distance 
 
 

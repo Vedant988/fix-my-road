@@ -1,45 +1,3 @@
-<!-- file_complaint.html which is "working" in FLASK BACKEND  -->
-<!-- <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Complaint</title>
-</head>
-
-<body>
-    <div class="container">
-        <h1>File a Pothole Complaint</h1>
-
-        <form method="POST" action="/submit_complaint" enctype="multipart/form-data">
-            <label for="image">Upload Pothole Image:</label>
-            <input type="file" name="image" id="image" required>
-
-            <label for="description">Description:</label>
-            <textarea name="description" id="description" rows="4" required></textarea>
-
-            <label for="contact">Contact Number:</label>
-            <input type="text" name="contact" id="contact" required>
-
-            <label for="latitude">Latitude:</label>
-            <input type="text" name="latitude" id="latitude" required placeholder="e.g., 28.6139">
-
-            <label for="longitude">Longitude:</label>
-            <input type="text" name="longitude" id="longitude" required placeholder="e.g., 77.2090">
-
-            <button type="submit">Submit Complaint</button>
-        </form>
-
-        <div class="back-btn">
-            <a href="{{ url_for('home') }}"><button>Back to Home</button></a>
-        </div>
-    </div>
-</body>
-
-</html> -->
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1069,37 +1027,10 @@
         let isSelectingLocation = false;
         let locationConfirmed = false;
         
-        // Progress bar handling
-        const progressBar = document.querySelector('.progress-bar-fill');
-        const formInputs = document.querySelectorAll('input, textarea');
-        const totalInputs = formInputs.length;
-        let completedInputs = 0;
-        
-        function updateProgress() {
-            completedInputs = 0;
-            formInputs.forEach(input => {
-                if (input.value.trim() !== '') {
-                    completedInputs++;
-                }
-            });
-            
-            const progress = (completedInputs / totalInputs) * 100;
-            progressBar.style.width = `${progress}%`;
-        }
-        
-        formInputs.forEach(input => {
-            input.addEventListener('change', updateProgress);
-            input.addEventListener('keyup', updateProgress);
-        });
-        
-        // File input handling
-        const fileInput = document.getElementById('image');
-        const fileInputText = document.querySelector('.custom-file-text');
-        
-        fileInput.addEventListener('change', function(e) {
+        // Image preview functionality
+        document.getElementById('image').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
-                fileInputText.textContent = file.name;
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     const preview = document.getElementById('imagePreview');
@@ -1111,12 +1042,8 @@
                     if (marker) {
                         updateMarkerPopup();
                     }
-                    
-                    updateProgress();
                 };
                 reader.readAsDataURL(file);
-            } else {
-                fileInputText.textContent = 'No file chosen';
             }
         });
         
@@ -1176,8 +1103,8 @@
 
             // Add accuracy circle
             accuracyCircle = L.circle([latitude, longitude], {
-                color: '#FFB433',
-                fillColor: '#FFB433',
+                color: '#FFB22C',
+                fillColor: '#FFB22C',
                 fillOpacity: 0.15,
                 radius: accuracy
             }).addTo(map);
@@ -1210,10 +1137,7 @@
                     map.removeLayer(accuracyCircle);
                     accuracyCircle = null;
                 }
-                updateProgress();
             });
-            
-            updateProgress();
         }
         
         // Enable location selection mode
@@ -1229,8 +1153,6 @@
                 const clickedLatLng = e.latlng;
                 document.getElementById('latitude').value = clickedLatLng.lat.toFixed(6);
                 document.getElementById('longitude').value = clickedLatLng.lng.toFixed(6);
-                
-                
                 
                 // Move marker to clicked location
                 if (marker) {
