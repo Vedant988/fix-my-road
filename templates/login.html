@@ -4,12 +4,15 @@
     Password: <input type="password" name="password" required><br>
     <button type="submit">Login</button>
 </form> -->
+
+
+<!-- login.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Citizen Login</title>
+    <title>Citizen Login | fixmyroad™</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <style>
@@ -21,42 +24,84 @@
         }
 
         body {
-            background-color: #f5f5f5;
+            background-color: #000;
             line-height: 1.6;
+            color: #fff;
         }
 
         .navmenu {
-            background-color: #fff;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            background-color: rgba(0, 0, 0, 0.8);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
             position: fixed;
             top: 0;
             width: 100%;
             z-index: 100;
-            padding: 10px 0;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 193, 7, 0.2);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #FFC107;
         }
 
         .navmenu ul {
             display: flex;
             list-style: none;
             align-items: center;
-            justify-content: center;
             padding: 0;
             margin: 0;
         }
 
         .navmenu a {
-            color: #37517e;
+            color: #fff;
             padding: 10px 15px;
             text-decoration: none;
             font-weight: 500;
+            transition: color 0.3s;
         }
 
-        .navmenu a:hover {
-            color: #47b2e4;
+        .navmenu a:hover, .navmenu a.active {
+            color: #FFC107;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid #FFC107;
+            background: transparent;
+            color: #FFC107;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: #FFC107;
+            color: #000;
         }
 
         .login_page {
-            background: url("https://via.placeholder.com/1200x800") no-repeat center center;
+            background: url("/api/placeholder/1200/800") no-repeat center center;
             background-size: cover;
             min-height: 100vh;
             display: flex;
@@ -64,7 +109,7 @@
         }
 
         .overlay {
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.7);
             min-height: 100vh;
             width: 100%;
             display: flex;
@@ -79,10 +124,11 @@
         }
 
         .login-box {
-            background-color: white;
+            background-color: rgba(0, 0, 0, 0.8);
             border-radius: 8px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 30px rgba(255, 193, 7, 0.2);
             padding: 40px;
+            border: 1px solid rgba(255, 193, 7, 0.2);
         }
 
         .login-title {
@@ -92,13 +138,13 @@
 
         .login-title h4 {
             font-size: 24px;
-            color: #333;
+            color: #FFC107;
             margin-bottom: 10px;
             font-weight: 600;
         }
 
         .login-title p {
-            color: #666;
+            color: #ccc;
             font-size: 14px;
         }
 
@@ -116,14 +162,14 @@
 
         .login-type-option input[type="radio"] {
             margin-right: 8px;
-            accent-color: #47b2e4;
+            accent-color: #FFC107;
             width: 16px;
             height: 16px;
         }
 
         .login-type-option label {
             font-weight: 500;
-            color: #333;
+            color: #fff;
             cursor: pointer;
         }
 
@@ -135,27 +181,29 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: #333;
+            color: #fff;
             font-size: 14px;
         }
 
         .form-control {
             width: 100%;
             padding: 12px 15px;
-            border: 1px solid #ddd;
+            border: 1px solid rgba(255, 193, 7, 0.3);
             border-radius: 4px;
             font-size: 14px;
             transition: border-color 0.3s;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
         }
 
         .form-control:focus {
-            border-color: #47b2e4;
+            border-color: #FFC107;
             outline: none;
         }
 
         .btn-login {
-            background-color: #47b2e4;
-            color: white;
+            background-color: #FFC107;
+            color: #000;
             padding: 12px;
             border: none;
             border-radius: 4px;
@@ -167,7 +215,7 @@
         }
 
         .btn-login:hover {
-            background-color: #209dd8;
+            background-color: #e0aa00;
         }
 
         .login-links {
@@ -176,7 +224,7 @@
         }
 
         .login-links a {
-            color: #47b2e4;
+            color: #FFC107;
             text-decoration: none;
         }
 
@@ -184,10 +232,32 @@
             text-decoration: underline;
         }
 
+        .tagline {
+            text-align: center;
+            margin: 60px 0 40px;
+        }
+
+        .tagline h2 {
+            font-size: 36px;
+            color: #FFC107;
+            margin-bottom: 10px;
+        }
+
         .copyright {
-            background: #ffffff;
+            background: rgba(0, 0, 0, 0.8);
             padding: 20px;
             text-align: center;
+            color: #ccc;
+            border-top: 1px solid rgba(255, 193, 7, 0.2);
+        }
+
+        .copyright a {
+            color: #FFC107;
+            text-decoration: none;
+        }
+
+        .copyright a:hover {
+            text-decoration: underline;
         }
 
         @media (max-width: 768px) {
@@ -195,9 +265,18 @@
                 padding: 30px;
             }
             
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
             .navmenu ul {
                 flex-direction: column;
-                display: none;
+                gap: 10px;
+            }
+            
+            .tagline h2 {
+                font-size: 28px;
             }
         }
 
@@ -215,22 +294,36 @@
                 flex-direction: column;
                 align-items: center;
             }
+            
+            .tagline h2 {
+                font-size: 24px;
+            }
         }
     </style>
 </head>
 <body>
     <nav class="navmenu">
-        <ul>
-            <li><a href="#" class="active">🏠 Dashboard</a></li>
-            <li><a href="#">ℹ About Us</a></li>
-            <li><a href="#">🚀 Explore</a></li>
-            <li><a href="#">📞 Support</a></li>
-        </ul>
+        <div class="nav-container">
+            <a href="#" class="logo">fix<span>myroad</span>™</a>
+            <ul>
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Projects</a></li>
+                <li><a href="#">Support & Help</a></li>
+            </ul>
+            <div class="nav-buttons">
+                <button class="nav-btn"><i class="fa fa-user"></i></button>
+                <button class="nav-btn"><i class="fa fa-bell"></i></button>
+            </div>
+        </div>
     </nav>
 
     <div class="login_page">
         <div class="overlay">
             <div class="login-container">
+                <div class="tagline">
+                    <h2>Report. Raise. Repair.</h2>
+                </div>
                 <div class="login-box">
                     <form method="POST" action="{{ url_for('login') }}" novalidate>
                         <div class="login-title">
@@ -250,13 +343,13 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="email">Email <span style="color:#e03a3c">*</span></label>
+                            <label for="email">Email <span style="color:#FFC107">*</span></label>
                             <input type="email" id="email" name="email" class="form-control" 
                                    placeholder="Enter your email" required 
                                    pattern="[^@\s]+@[^@\s]+\.[^@\s]+" />
                         </div>
                         <div class="form-group">
-                            <label for="password">Password <span style="color:#e03a3c">*</span></label>
+                            <label for="password">Password <span style="color:#FFC107">*</span></label>
                             <input type="password" id="password" name="password" 
                                    class="form-control" placeholder="Enter password" required 
                                    minlength="6" />
@@ -274,8 +367,8 @@
     </div>
     
     <div class="copyright">
-        <p>&copy; 2025 Nagpur Municipal Corporation. All Rights Reserved.</p>
-        <p>Designed &amp; Developed by <a href="https://pmc.gov.in" target="_blank">Nagpur Municipal Corporation</a></p>
+        <p>&copy; 2025 fixmyroad™. All Rights Reserved.</p>
+        <p>Designed &amp; Developed by <a href="#" target="_blank">fixmyroad™ Team</a></p>
     </div>
 </body>
 </html>

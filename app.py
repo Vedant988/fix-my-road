@@ -13,6 +13,7 @@ import cv2
 import supervision as sv
 from roboflow import Roboflow
 import numpy as np
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -22,9 +23,13 @@ rf = Roboflow(api_key="ZYZiqRfxocCQlUyr6YW9")
 project = rf.workspace().project("pothole-detection-i00zy")
 model = project.version(2).model
 
-client = MongoClient('mongodb://localhost:27017/') 
+client = MongoClient('mongodb://localhost:27017/')
+
 db = client['pothole_app']
 users_collection = db['users']
+resolved_complaints_collection = db['resolved_complaints']
+
+
 complaints_collection = db['complaints']
 app.config['UPLOAD_FOLDER'] = 'static/images'
 app.config['ALLOWED_EXTENSIONS'] = {'jpg', 'jpeg', 'png', 'gif', 'webp','avif'}
@@ -73,13 +78,42 @@ def view_complaints():
     return render_template('view_complaints.html', complaints=all_complaints)
 
 
-@app.route('/your_complaint_status', methods=['GET', 'POST'])
+# @app.route('/your_complaint_status', methods=['GET', 'POST'])
+# @login_required
+# def your_complaint_status():
+#     user_email = session['user']
+#     complaint_statuses = list(complaints_collection.find({'user_email': user_email}))
+#     return render_template('your_complaint_status.html', complaint_statuses=complaint_statuses)
+@app.route('/your_complaint_status')
 @login_required
 def your_complaint_status():
-    user_email = session['user']
-    complaint_statuses = list(complaints_collection.find({'user_email': user_email}))
-    return render_template('your_complaint_status.html', complaint_statuses=complaint_statuses)
-
+    # Get the current user's email from the session
+    user_email = session.get('user')
+    user = users_collection.find_one({"email": user_email})
+    
+    if not user:
+        return redirect(url_for('home'))
+    # Get active complaints for the current user
+    active_complaints = list(complaints_collection.find({"user_email": user_email}))
+    # Get resolved complaints for the current user
+    resolved_complaints = list(resolved_complaints_collection.find({"user_email": user_email}))
+    
+    complaints_count = len(active_complaints) + len(resolved_complaints)
+    resolved_count = len(resolved_complaints)
+    pending_count = 0
+    for complaint in active_complaints:
+        if complaint.get('complaint_approved_by_admin', False):
+            pending_count += 1
+    
+    return render_template(
+        'your_complaint_status.html',
+        user=user,
+        active_complaints=active_complaints,
+        resolved_complaints=resolved_complaints,
+        complaints_count=complaints_count,
+        resolved_count=resolved_count,
+        pending_count=pending_count
+    )
 
 @app.route('/upvote/<complaint_id>', methods=['POST'])
 @login_required
@@ -335,7 +369,8 @@ def submit_complaint():
         'pothole_count': pothole_count,
         'normalized_area': normalized_area,
         'complaint_approved_by_admin': False,
-        'complaint_resolved': False  
+        'complaint_resolved': False ,
+        'submission_date': datetime.now()
     }
     
     complaints_collection.insert_one(complaint)
@@ -364,6 +399,14 @@ def register():
     return render_template('register.html')
 
 
+@app.route('/admin/resolved')
+def admin_resolved():
+    if not session.get('is_admin', False):
+        return redirect(url_for('login'))
+    
+    resolved = list(resolved_complaints_collection.find().sort("resolution_date", -1))
+    
+    return render_template('admin_resolved.html', resolved_complaints=resolved)
 
 # @app.route('/login', methods=['GET', 'POST'])
 # def login():
@@ -384,13 +427,13 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-        # Admin login check
+
         if email == "admin@gmail.com" and password == "12345678":
             session['user'] = email
             session['is_admin'] = True
             session['first_name'] = "Admin"
             return redirect(url_for('admin_dashboard'))
-        # Regular user login
+        
         user = users_collection.find_one({'email': email})
         if user and bcrypt.check_password_hash(user['password'], password):
             session['user'] = email
@@ -401,19 +444,18 @@ def login():
             return "Invalid credentials!"
     return render_template('login.html')
 
-# New route for admin dashboard
 @app.route('/admin/dashboard')
 def admin_dashboard():
     if not session.get('is_admin', False):
         return redirect(url_for('login'))
-    # Get stats for dashboard boxes
+    
     total_users = users_collection.count_documents({})
     verified_requests = complaints_collection.count_documents({"validated_by_model": 1})
     approved_requests = complaints_collection.count_documents({"complaint_approved_by_admin": True})
-    resolved_requests = complaints_collection.count_documents({"complaint_resolved": True})
-    
-    # Get all complaints sorted by priority (descending)
+    resolved_requests = resolved_complaints_collection.count_documents({})
+
     complaints = list(complaints_collection.find().sort("priority", -1))
+    
     return render_template('admin_home.html', 
                           total_users=total_users,
                           verified_requests=verified_requests,
@@ -421,28 +463,42 @@ def admin_dashboard():
                           resolved_requests=resolved_requests,
                           complaints=complaints)
 
-# Route to handle admin approval/resolution actions
 @app.route('/admin/update_complaint', methods=['POST'])
 def update_complaint():
     if not session.get('is_admin', False):
-        return redirect(url_for('login'))
+        return jsonify({"success": False, "message": "Unauthorized"}), 401
     
     complaint_id = request.form.get('complaint_id')
     action_type = request.form.get('action_type')
-    is_checked = request.form.get('is_checked') == 'true'
     
-    # Update the appropriate field based on action type
-    update_field = {}
-    if action_type == 'approve':
-        update_field = {"complaint_approved_by_admin": is_checked}
-    elif action_type == 'resolve':
-        update_field = {"complaint_resolved": is_checked}
-    
-    complaints_collection.update_one(
-        {"_id": ObjectId(complaint_id)},
-        {"$set": update_field}
-    )
-    return jsonify({"success": True})
+    try:
+        complaint = complaints_collection.find_one({"_id": ObjectId(complaint_id)})
+        if not complaint:
+            return jsonify({"success": False, "message": "Complaint not found"}), 404
+        if action_type == 'approve':
+            complaints_collection.update_one(
+                {"_id": ObjectId(complaint_id)},
+                {"$set": {
+                    "complaint_approved_by_admin": True,
+                    "status": "Approved by Admin",
+                    "approval_date": datetime.now()
+                }}
+            )
+            
+        elif action_type == 'reject':
+            complaints_collection.delete_one({"_id": ObjectId(complaint_id)})
+            
+        elif action_type == 'resolve':
+            complaint["resolution_date"] = datetime.now()
+            complaint["status"] = "Resolved"
+            resolved_complaints_collection.insert_one(complaint)
+            complaints_collection.delete_one({"_id": ObjectId(complaint_id)})
+            
+        return jsonify({"success": True})
+        
+    except Exception as e:
+        print(f"Error processing complaint action: {e}")
+        return jsonify({"success": False, "message": str(e)}), 500
 
 
 
