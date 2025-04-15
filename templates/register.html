@@ -130,6 +130,9 @@
             background-color: rgba(4, 28, 50, 0.6);
             color: #fff;
         }
+        .form-control::placeholder {
+            color: #FFF;
+        }
 
         .form-control:focus {
             border-color: #ECB365;
@@ -138,7 +141,7 @@
         }
 
         .form-control:invalid {
-            border-color: rgba(255, 70, 70, 0.5);
+            /* border-color: rgba(255, 70, 70, 0.5); */
         }
 
         .input-icon {
@@ -459,17 +462,18 @@
     <header id="header" class="header d-flex align-items-center fixed-top">
         <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
     
-          <a href="index.html" class="logo d-flex align-items-center me-auto me-lg-0">
-            <h1 class="sitename">𝐟𝐢𝐱𝐦𝐲𝐫𝐨𝐚𝐝™</h1>
-            <span>&nbsp;&nbsp;</span>
-          </a>
+            <a href="index.html" class="logo d-flex align-items-center me-auto me-lg-0">
+       
+                <a href="#" class="logo">fix<span>myroad</span>™</a>
+              <span>&nbsp;&nbsp;</span>
+            </a>
     
           <nav id="navmenu" class="navmenu">
             <ul>
-              <li><a href="index.html">Home&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
-              <li><a href="index.html#about">About Us&nbsp;&nbsp;</a></li>
-              <li><a href="index.html#portfolio">Projects&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
-              <li><a href="index.html#contact">Support & Help&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+              <li><a href="{{ url_for('home') }}">Home&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+              <li><a href="{{ url_for('home') }}">About Us&nbsp;&nbsp;</a></li>
+              <li><a href="{{ url_for('home') }}">Projects&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+              <li><a href="{{ url_for('home') }}#contact">Contact Us&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
           </nav>
@@ -490,14 +494,6 @@
             </div>
           {% endif %}
         </div>
-        
-        {% if user %}
-        <div class="text-animation-container">
-          <div><p class="animated-text line-1 anim-typewriter">
-            Welcome, <span>{{ first_name }}</span></p>
-          </div>
-        </div>
-        {% endif %}
     </header>
     
     <ul class="background" style="z-index: -10;">
@@ -570,6 +566,11 @@
                         <button type="submit" class="btn-register">
                             Register
                         </button>
+                        {% if error %}
+                            <div class="registration-error" style="color: red; margin-bottom: 15px; font-weight: bold; text-align: center;">
+                                {{ error }}
+                            </div>
+                        {% endif %}
                         
                         <div class="login-links">
                             <p>Already have an account? <a href="{{ url_for('login') }}">Login Here</a></p>

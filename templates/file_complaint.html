@@ -260,19 +260,23 @@
             background-color: rgba(255, 255, 255, 0.05);
             color: var(--light-text);
         }
+        .form-control1::placeholder {
+  color: #fff; /* or any color you want */
+  opacity: 1;
+}
         
         .form-control:focus {
             border-color: var(--primary-color);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(236, 179, 101, 0.2), 0 0 15px rgba(236, 179, 101, 0.1);
-            background-color: rgba(255, 255, 255, 0.1);
+            /* box-shadow: 0 0 0 3px rgba(236, 179, 101, 0.2), 0 0 15px rgba(236, 179, 101, 0.1); */
+            /* background-color: rgba(255, 255, 255, 0.1); */
         }
         
         .form-group .input-icon {
             position: absolute;
             left: 12px;
             top: 40px;
-            color: var(--primary-color);
+            /* color: var(--primary-color); */
             font-size: 16px;
             transition: all 0.3s;
         }
@@ -899,7 +903,54 @@
 .logo span {
             color: #FFC107;
 }     
-        
+.blurred {
+    backdrop-filter: blur(10px);
+    background-color: #041c32; /* Optional for translucent effect */
+}
+.form-control1::placeholder {
+  color: #fff; /* or any color you want */
+  opacity: 1;
+}
+/* Add this to your CSS file or include it in a <style> tag in your HTML head */
+    .alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.alert-link {
+    font-weight: bold;
+    color: inherit;
+    text-decoration: underline;
+    display: inline-block;
+    margin-top: 8px;
+    transition: opacity 0.2s;
+}
+
+.alert-link:hover {
+    opacity: 0.8;
+}
+
+.alert i {
+    font-size: 1.2em;
+}
         
     </style>
 </head>
@@ -925,23 +976,26 @@
     <!-- Header -->
     <header id="header" class="header">
         <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
-          <a href="#" class="logo d-flex align-items-center me-auto me-lg-0">
-            <a href="#" class="logo">fix<span>myroad</span>™</a>
+          <a href="/" class="logo d-flex align-items-center me-auto me-lg-0">
+            <a href="/" class="logo">fix<span>myroad</span>™</a>
             <span>&nbsp;&nbsp;</span>
           </a>
     
           <nav id="navmenu" class="navmenu">
             <ul>
-              <li><a href="#">Home&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
-              <li><a href="index.html#about">About Us&nbsp;&nbsp;</a></li>
-              <li><a href="index.html#portfolio">Projects&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
-              <li><a href="index.html#contact">Support & Help&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+              <li><a href="{{ url_for('home') }}">Home&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+              <li><a href="{{ url_for('your_complaint_status') }}">My Complaints&nbsp;&nbsp;</a></li>
+              <li><a href="{{ url_for('view_on_map') }}">Map View&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+              <li><a href="{{ url_for('view_complaints') }}">Community&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
           </nav>
           
           <div class="button-group">
-            <a class="btn-getstarted" href="#">Back</a>
+            <a class="btn-getstarted" href="{{ url_for('home') }}">Back</a>
+          </div>
+          <div class="button-group">
+            <a class="btn-getstarted" href="/logout">Logout</a>
           </div>
         </div>
     </header>
@@ -949,7 +1003,27 @@
     <!-- Form container -->
     <div class="container">
         <h1 class="form-title">File a Pothole Complaint</h1>
-        
+        {% if error %}
+            <div class="alert alert-danger">
+                <i class="bi bi-exclamation-triangle"></i> {{ error }}
+                {% if redirect_to_community %}
+                <br>
+                <a href="{{ url_for('view_complaints') }}" class="alert-link">
+                    <i class="bi bi-arrow-right-circle"></i> View in Community Section
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        <i class="bi bi-info-circle"></i> {{ message }}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
         
         
         <form id="reportForm" method="POST" action="/submit_complaint" enctype="multipart/form-data">
@@ -958,9 +1032,9 @@
                 <label class="form-label"><i class="bi bi-camera"></i> Upload Pothole Image</label>
                 <div class="image-upload">
                     <div class="image-instructions">
-                        <p><i class="bi bi-check-circle"></i> Take a clear photo of the pothole from multiple angles if possible</p>
-                        <p><i class="bi bi-check-circle"></i> Ensure the photo shows the full extent of the problem</p>
-                        <p><i class="bi bi-check-circle"></i> Avoid blurry or dark photos for better identification</p>
+                        <p><i class="bi bi-check-circle"></i> Distance: Take photo from 2–3 meters away. </p>
+                        <p><i class="bi bi-check-circle"></i> Angle: Use a 30°–45° angle to show depth. </p>
+                        <p><i class="bi bi-check-circle"></i> Clarity: Make sure the image is clear and focused. </p>
                     </div>
                     <input type="file" name="image" id="image" class="form-control" accept="image/*" required>
                     <img id="imagePreview" class="image-preview" alt="Image preview">
@@ -970,13 +1044,13 @@
             <!-- Description -->
             <div class="form-group">
                 <label for="description" class="form-label"><i class="bi bi-chat-square-text"></i> Description</label>
-                <textarea name="description" id="description" class="form-control" placeholder="Please describe the pothole issue in detail..." required></textarea>
+                <textarea name="description" id="description" class="form-control form-control1" placeholder="Please describe the pothole issue in detail..."></textarea>
             </div>
             
             <!-- Contact Number -->
             <div class="form-group">
                 <label for="contact" class="form-label"><i class="bi bi-telephone"></i> Contact Number</label>
-                <input type="text" name="contact" id="contact" class="form-control" placeholder="Enter your contact number" required>
+                <input type="text" name="contact" id="contact" class="form-control form-control1" placeholder="Enter your contact number" required>
             </div>
             
             <!-- Map location -->
@@ -1274,18 +1348,25 @@
             map = L.map('map', {
                 center: [defaultLat, defaultLng],
                 zoom: 12,
-                layers: [darkLayer] // Start with dark theme
+                layers: [streetLayer] // Start with dark theme
             });
             
             // Add layer control
             const baseMaps = {
-                "Dark View": darkLayer,
                 "Street View": streetLayer,
+                "Dark View": darkLayer,
                 "Satellite View": satelliteLayer
             };
             
             L.control.layers(baseMaps).addTo(map);
             L.control.scale().addTo(map);
+        });
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 100) {
+                header.classList.add('blurred');
+            } else {
+                header.classList.remove('blurred');
+            }
         });
     </script>
 </body>

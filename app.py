@@ -310,7 +310,8 @@ def submit_complaint():
             distance = calculate_distance(float(latitude), float(longitude), float(existing_lat), float(existing_lng))
             if distance <= threshold_distance:
                 return render_template('file_complaint.html', 
-                    error="Invalid submission, same complaint is already uploaded, check community please")
+                    error="A similar complaint already exists within 5 meters of this location. Please check the community section to upvote it for faster action.",
+                    redirect_to_community=True)
     
     # Process image if one was uploaded
     if image and image.filename != '' and allowed_file(image.filename):
@@ -332,7 +333,7 @@ def submit_complaint():
             # Handle case when no predictions are returned
             if not predictions:
                 return render_template('file_complaint.html', 
-                    error="No potholes detected in the image. Please submit a clearer image of the pothole.")
+                    error="No potholes detected in the image. Please submit a clearer image showing the pothole.")
             
             # Set minimum confidence threshold to avoid false positives
             min_confidence = 0.5
@@ -354,7 +355,7 @@ def submit_complaint():
             # If no valid pothole detections above threshold
             if not xyxy:
                 return render_template('file_complaint.html', 
-                    error="No valid pothole detections in the image. Please submit a clearer image.")
+                    error="No valid pothole detections in the image. Please ensure the pothole is clearly visible and try again.")
             
             # Convert to NumPy arrays and process detections
             try:
@@ -364,7 +365,7 @@ def submit_complaint():
                 
                 if xyxy.shape[1] != 4:
                     return render_template('file_complaint.html', 
-                        error="Error processing image. Please try a different image.")
+                        error="Error processing image dimensions. Please try a different image.")
                 
                 detections = sv.Detections(xyxy=xyxy, confidence=confidences, class_id=class_ids)
                 potholes = detections[detections.class_id == 0]
@@ -372,7 +373,7 @@ def submit_complaint():
                 
                 if pothole_count == 0:
                     return render_template('file_complaint.html', 
-                        error="No potholes confirmed by our system. Please submit a clearer image.")
+                        error="Our system couldn't confirm any potholes in your image. Please submit a clearer photo.")
                 
                 # Calculate areas and normalize
                 bounding_boxes = potholes.xyxy
@@ -382,7 +383,7 @@ def submit_complaint():
                 img = cv2.imread(filepath)
                 image_height, image_width = img.shape[:2]
                 image_area = image_height * image_width
-                normalized_area = total_area / image_area
+                normalized_area = total_area/image_area
                 
                 # If potholes detected, mark as validated
                 if pothole_count > 0:
@@ -391,19 +392,21 @@ def submit_complaint():
             except Exception as e:
                 print(f"Error processing detections: {e}")
                 return render_template('file_complaint.html', 
-                    error="Error processing image. Please try a different image.")
+                    error="Error processing image data. Please try a different image or angle.")
                 
         except Exception as e:
             print(f"Error processing image: {e}")
             return render_template('file_complaint.html', 
-                error="Error processing image. Please try again.")
+                error="Error processing uploaded image. Please try again with a different photo.")
     else:
         print("No valid image uploaded or image format not allowed")
+        return render_template('file_complaint.html',
+            error="Please upload a valid image file (JPG, PNG, or JPEG).")
     
     # If image was uploaded but not validated, reject submission
     if image and image.filename != '' and validated_by_model == 0:
         return render_template('file_complaint.html', 
-            error="We couldn't validate any potholes in your image. Please submit a clearer photo.")
+            error="We couldn't validate any potholes in your image. Please submit a clearer photo that shows the pothole damage.")
     
     # Calculate priority based on pothole count and normalized area
     priority = 10 * pothole_count + 3 * normalized_area
@@ -434,12 +437,13 @@ def submit_complaint():
     if pothole_count > 0:
         complaints_collection.insert_one(complaint)
         print("Complaint Added:", complaint)
+        flash("Your pothole complaint has been successfully submitted!", "success")
         return redirect(url_for('home'))
     else:
         return render_template('file_complaint.html', 
-            error="Invalid submission: No potholes detected in the image.")
+            error="Invalid submission: No potholes detected in the image. Please try a clearer photo.")
 
-@app.route('/register', methods=['GET','POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         first_name = request.form['first_name']
@@ -448,7 +452,7 @@ def register():
         password = bcrypt.generate_password_hash(request.form['password']).decode('utf-8')
 
         if users_collection.find_one({'email': email}):
-            return "User already exists!"
+            return render_template('register.html', error="User already exists!")
 
         users_collection.insert_one({
             'first_name': first_name,
@@ -458,7 +462,9 @@ def register():
         })
 
         return redirect(url_for('login'))
+    
     return render_template('register.html')
+
 
 
 
@@ -523,8 +529,10 @@ def login():
             session['first_name'] = user.get('first_name', '')  
             return redirect(url_for('home'))
         else:
-            return "Invalid credentials!"
+            return render_template('login.html', error="Invalid Credential")
+    
     return render_template('login.html')
+
 
 @app.route('/admin/dashboard')
 def admin_dashboard():

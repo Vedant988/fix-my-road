@@ -136,7 +136,9 @@
             background-color: rgba(4, 28, 50, 0.6);
             color: #fff;
         }
-
+        .form-control::placeholder {
+            color: #FFF;
+        }
         .form-control:focus {
             border-color: #ECB365;
             outline: none;
@@ -675,17 +677,18 @@
     <header id="header" class="header d-flex align-items-center fixed-top">
         <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
     
-          <a href="index.html" class="logo d-flex align-items-center me-auto me-lg-0">
-            <h1 class="sitename">𝐟𝐢𝐱𝐦𝐲𝐫𝐨𝐚𝐝™</h1>
-            <span>&nbsp;&nbsp;</span>
-          </a>
+            <a href="index.html" class="logo d-flex align-items-center me-auto me-lg-0">
+       
+                <a href="#" class="logo">fix<span>myroad</span>™</a>
+              <span>&nbsp;&nbsp;</span>
+            </a>
     
           <nav id="navmenu" class="navmenu">
             <ul>
-              <li><a href="index.html">Home&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
-              <li><a href="index.html#about">About Us&nbsp;&nbsp;</a></li>
-              <li><a href="index.html#portfolio">Projects&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
-              <li><a href="index.html#contact">Support & Help&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+              <li><a href="{{ url_for('home') }}">Home&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+              <li><a href="{{ url_for('home') }}">About Us&nbsp;&nbsp;</a></li>
+              <li><a href="{{ url_for('home') }}">Projects&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+              <li><a href="{{ url_for('home') }}#contact">Contact Us&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
           </nav>
@@ -790,19 +793,25 @@
 
                         <div class="form-group">
                             <label for="email">Email <span style="color:#ECB365">*</span></label>
-                            <input type="email" id="email" name="email" class="form-control" 
+                            <input type="email" id="email" name="email" class="form-control form-control1" 
                                    placeholder="Enter your email" required 
                                    pattern="[^@\s]+@[^@\s]+\.[^@\s]+" />
                         </div>
                         <div class="form-group">
                             <label for="password">Password <span style="color:#ECB365">*</span></label>
                             <input type="password" id="password" name="password" 
-                                   class="form-control" placeholder="Enter password" required 
+                                   class="form-control form-control1" placeholder="Enter password" required 
                                    minlength="6" />
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn-login">Login</button>
                         </div>
+                        {% if error %}
+                            <div class="login-error" style="color: red; margin-bottom: 15px; font-weight: bold; text-align: center;">
+                                {{ error }}
+                            </div>
+                        {% endif %}
+
                         <div class="login-links">
                             <a href="{{ url_for('register') }}"><span>Register Now</span></a>
                         </div>

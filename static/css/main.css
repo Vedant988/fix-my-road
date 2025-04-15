@@ -11,7 +11,7 @@
   --background-color: #ffffff; /* Background color for the entire website, including individual sections */
   --default-color: #444444; /* Default color used for the majority of the text content across the entire website */
   --heading-color: #151515; /* Color for headings, subheadings and title throughout the website */
-  --accent-color: #ffb300; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
+  --accent-color: #ECB365; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
   --surface-color: #ffffff; /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
   --contrast-color: #312f2f; /* Contrast color for text, ensuring readability against backgrounds of accent, heading, or default colors. */
 }
@@ -104,7 +104,8 @@ h6 {
     .icon-box {
       position: relative;
       z-index: 20;
-      background: rgba(0, 0, 0, 0.7);
+      /* background: rgba(0, 0, 0, 0.7); */
+      background-color: #064663;
       padding: 20px;
       border-radius: 10px;
       margin-bottom: 20px;
@@ -490,7 +491,7 @@ section,
 .section {
   color: var(--default-color);
   background-color: var(--background-color);
-  padding: 60px 0;
+  padding: 40px 0;
   scroll-margin-top: 80px;
   overflow: clip;
 }
@@ -565,7 +566,7 @@ section,
 
 .hero:before {
   content: "";
-  background: color-mix(in srgb, var(--background-color), transparent 15%);
+  background: color-mix(in srgb, #041C32, transparent 15%);
   position: absolute;
   inset: 0;
   z-index: 2;
