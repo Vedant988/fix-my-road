@@ -114,16 +114,8 @@ FIXMYROAD/
 git clone https://github.com/yourusername/fixmyroad.git
 cd fixmyroad
 
-# Create and activate virtual environment
 python -m venv venv
-
-# On Windows
 venv\Scripts\activate
-
-# On macOS/Linux
-source venv/bin/activate
-
-# Install dependencies
 pip install -r requirements.txt
 
 
