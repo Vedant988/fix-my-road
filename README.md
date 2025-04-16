@@ -1,4 +1,5 @@
 # FixMyRoad
+![image_alt](https://github.com/Vedant988/fix-my-road/blob/main/Screenshot%202025-04-16%20222636.png?raw=true)
 
 A Flask-based web application that bridges the gap between citizens and government authorities to address India's road infrastructure problems, particularly potholes and related hazards.
 
@@ -62,11 +63,13 @@ FIXMYROAD/
 - Image-based pothole reporting with ML verification
 - Geolocation tagging and mapping
 - Detailed complaint tracking from submission to resolution
+![image_alt](https://github.com/Vedant988/fix-my-road/blob/main/Screenshot%202025-04-15%20020123.png?raw=true)
 
 ### 2. Geographic Visualization
 - Interactive map using Leaflet to display reported issues
 - Heatmap view of problem density across regions
 - Location-based filtering and navigation
+![image_alt](https://github.com/Vedant988/fix-my-road/blob/main/Screenshot%202025-04-16%20222920.png?raw=true)
 
 ### 3. Community Feed
 - Public visibility of verified complaints
@@ -77,6 +80,7 @@ FIXMYROAD/
 - Personalized view of active and resolved complaints
 - Status tracking and notifications
 - Historical record of user contributions
+![image_alt](https://github.com/Vedant988/fix-my-road/blob/main/Screenshot%202025-04-16%20222848.png?raw=true)
 
 ### 5. Bridge Prediction Tool
 - XGBoost regression model for bridge life expectancy prediction
