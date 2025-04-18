@@ -111,7 +111,7 @@ FIXMYROAD/
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/fixmyroad.git
+git clone https://github.com/Vedant988/fix-my-road.git
 cd fixmyroad
 
 python -m venv venv
